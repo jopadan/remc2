@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/defs.h"
+//#include "engine/defs.h"
 
 //#include "stdafx.h"
 
@@ -8,13 +8,15 @@
 
 //#include <vld.h>//only for debug
 
+#include <array>
+
 #include "utilities/DataFileIO.h"
 #include "utilities/BitmapIO.h"
 
-#include "Basic.h"
-#include "Sound.h"
-#include "Animation.h"
-#include "Terrain.h"
+#include "engine/Basic.h"
+#include "engine/Sound.h"
+#include "engine/Animation.h"
+#include "engine/Terrain.h"
 
 //#define __CFSHL__(x, y) (x<<y)
 //#define __CFSHL__(x, y) 1
@@ -207,6 +209,22 @@ extern x_WORD __SS__;*/
 //extern char IsTable[];
 
 #pragma pack (1)
+typedef struct {//lenght 6
+	int8_t* dword_0;
+	int16_t word_4;
+}
+sub2x_BYTE_E7EE0x;
+
+typedef struct {//lenght 24
+	int32_t dword_0;
+	int32_t dword_4;
+	int32_t dword_8;
+	int32_t dword_12;
+	sub2x_BYTE_E7EE0x* str_16;
+	int8_t* dword_20;
+}
+subx_BYTE_E7EE0x;
+
 typedef struct {
 	int32_t dword_0;
 	int16_t word_4;
@@ -290,20 +308,20 @@ extern char x_BYTE_D41B6;
 #pragma pack (1)
 typedef struct {//lenght 28
 	int32_t dword_0;
-	int32_t dword_4;//mayby type_particle_str*
+	type_particle_str* Particles_4;//mayby type_particle_str*
 	int32_t dword_8;
 	int16_t word_12;
 	uint16_t word_14;
-	int16_t word_16_maxframes;
-	int16_t word_18;//width
-	int16_t word_20;//height
-	int16_t word_22;//anim frame index
+	int16_t CountOfFrames_16;
+	int16_t Width_18;//width
+	int16_t Height_20;//height
+	int16_t FrameIndex_22;//anim frame index
 	int16_t word_24;
 	int16_t word_26;
 }
 type_animations1;
 
-typedef struct {
+typedef struct {//lenght 6
 	int16_t word_0;
 	type_animations1* dword_2;
 }
@@ -481,14 +499,10 @@ int32_t /*__cdecl*/ signal(int32_t, int32_t);// weak
 //int __cdecl unknown_libname_1(char *a1);
 //void _disable();
 //void _enable();
-int /*__fastcall*/ _wcpp_1_unwind_leave__93(int32_t, int32_t, int32_t, int32_t, int32_t, int32_t);// weak
-int /*__cdecl*/ _wcpp_1_unwind_leave__100(int32_t, int32_t);// weak
 //long _InterlockedExchange(long volatile * Target, long Value);
-int /*__cdecl*/ _wcpp_1_unwind_leave__98(int32_t);// weak
 //x_DWORD /*__cdecl*/ dos_getvect(x_DWORD);// weak
 //void(*dos_getvect(x_DWORD number))();
 //x_DWORD /*__cdecl*/ dos_setvect(x_DWORD number, void(*actcall)(), x_DWORD);// weak
-int /*__fastcall*/ _wcpp_1_unwind_leave__130(int32_t);// weak
 //unsigned char _BitScanReverse(unsigned long * Index, unsigned long Mask);
 //void sub_8F920(uint8_t a1byte1, uint8_t a1byte2, int16_t posx, int16_t posy, uint8_t* a4, unsigned __int8 a5, char a6);
 //void sub_8F935_bitmap_draw_final(uint8_t a1byte1, uint8_t a1byte2, uint16_t a2, int a3, uint8_t* a4, uint8_t setbyte, char a6);
@@ -501,7 +515,7 @@ signed int sub_74767(signed __int16* a1, type_DWORD_E12AE* a2x, uint8_t* a3);
 //int /*__fastcall*/ _wcpp_1_unwind_leave__131(x_DWORD);// weak
 void sub_7AB00_draw_menu_animations(/*__int16 a1,*/ /*int a2,*/ /*type_str_unk_E1748* a3,*/ unsigned __int8 a4);
 int sub_7F6A0(int a1, int a2, __int16 a3, __int16 a4, char* a5, int8_t* a6, unsigned __int8 a7);
-unsigned int sub_81CA0(int a1, int a2, __int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5);
+void sub_81CA0(int a1, int a2, __int16 a3, __int16 a4, type_x_BYTE_E25ED_db_str* a5);
 signed int sub_7E5A0_pre_draw(int a1, int a2, __int16 a3, __int16 a4, uint8_t* a5, __int16 a6, __int16 a7);
 void sub_81260(int a1, int a2, int8_t* a3, __int16 a4, __int16 a5);
 void sub_82510(/*__int16 a1*//*, int *a2*/);
@@ -548,51 +562,20 @@ int32_t /*__cdecl*/ x_setmode(FILE* path, int mode);// weak
 //char sub_98BAF(int a1);
 __int16 sub_98AE9(__int16* a1, int a2);
 unsigned __CFRCR__(__int16 a, unsigned __int8 b);
-unsigned __CFRCL__(__int16 a, unsigned __int8 b);
 uint32_t /*__cdecl*/ x_write(FILE* descriptor, uint8_t* buffer, uint32_t size_t);
 //int32_t /*__cdecl*/ x_tolower(int32_t);// weak
 //FILE* x_open(char* path, int pmodex);
 //void __writegsx_WORD(unsigned long Offset, unsigned short Data);
 //void __writegsx_DWORD(unsigned long Offset, unsigned long Data);
 //x_DWORD /*__cdecl*/ dos_read(x_DWORD, char, x_DWORD, x_DWORD, x_DWORD);// weak
-//unsigned long __readgsx_DWORD(unsigned long Offset);
 void __inx_BYTEstring(unsigned short Port, unsigned char* Buffer, unsigned long Count);
-//int* MK_FP(unsigned int segment, unsigned int offset);
 //unsigned int __getcallerseflags(void);
-int /*__fastcall*/ _hook387(int32_t, int32_t, int32_t);// weak
 //void __sidt(void *Destination);
 //unsigned long __readcr0(void);
 //void __writecr0(unsigned __int32 Data);
 int sub_ACE8D(int16_t* a1, int a2, int* a3);
 void sub_AD0E2(int8_t* a1, int a2, int* a3, int8_t** a4);
 void sub_ACF1A(int8_t* a1, int a2, int* a3);
-int _FDFS(void);// weak
-int sub_B33D6(unsigned __int64 a1, int a2, int a3, int a4);
-//int _sigfpe_handler();// weak
-int sub_B337C(int a1, int a2, int a3);
-int sub_B37B0(int a1, int a2, int a3);
-int sub_B35DB(int a1, int a2, int8_t* a3, int a4);
-int sub_B39E0(__int64 a1, int a2, int8_t* a3);
-int sub_B41F9(int a1, int8_t* a2, int a3);
-int sub_B3ADF(__int64* a1, int8_t* a2);
-int sub_B3605(unsigned __int64 a1, int a2, unsigned int a3, int8_t* a4, int a5);
-int sub_B37DA(unsigned __int64 a1, unsigned int a2, unsigned int a3, int a4);
-__int16 /*__spoils<ecx>*/ sub_B3EAE(int a1, int8_t* a2, int a3);
-int sub_B4A2A(int* a1, int a2, int a3);
-int sub_B4077(__int64 a1, unsigned int a2, unsigned int a3, __int16 a4, __int16 a5);
-int sub_B423C(int a1, int8_t* a2);
-void sub_B49D8(int a1, int a2);
-int _DOS4G_hook_init(void);// weak
-int _Phar_hook_init(void);// weak
-int /*__cdecl*/ _Ergo_hook_init(int32_t, int32_t);// weak
-//int _Intel_hook_init(void);// weak
-//int _DOS4G_hook_fini(void);// weak
-double sub_B5250(char a1, double* a2, double result);
-double sub_B5205(char a1, int a2, __int16 a3, double a4);
-__int64 sub_B522B(int a1, __int16 a2, int _ESI);
-//int _Intel_hook_fini(void);// weak
-//int _Phar_hook_fini(void);// weak
-//int /*__cdecl*/ _Ergo_hook_fini(x_DWORD);// weak
 void sub_B5F8F(__int16 a1, uint16_t* a2, int32_t a3, __int16* a4);
 int sub_BD320(int result, int8_t* a2, int8_t* a3, int a4, int a5, int a6);
 void sub_B5EFA(__int16 a1, uint16_t* a2, int32_t a3, __int16* a4);
@@ -602,7 +585,7 @@ void sub_5BCC0_set_any_variables1();
 signed int sub_5C1B0_set_any_variables2();
 signed int sub_5BF50_load_psxdata();
 
-void sub_6EB90(filearray_struct* a1);
+void CreateIndexes_6EB90(filearray_struct* a1);
 
 //type_str_0x6E8E* pre_sub_4A190(uint32_t adress, int16_t* a1,int type);
 type_str_0x6E8E* pre_sub_4A190_axis_3d(uint32_t adress, axis_3d* a1, int type);//pre 22b190

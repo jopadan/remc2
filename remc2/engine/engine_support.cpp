@@ -473,7 +473,7 @@ uint8_t test_str_E2A74[] = {
 uint8_t* pdwScreenBuffer; //351628
 
 uint8_t* off_D41A8_sky;//graphics buffer// = (uint8_t*)&x_BYTE_14B4E0; // weak
-uint8_t* x_BYTE_14B4E0;//31C4E0
+uint8_t* x_BYTE_14B4E0_second_heightmap;//31C4E0
 
 posistruct_t* xy_DWORD_17DED4_spritestr;
 posistruct_t* xy_DWORD_17DEC0_spritestr;
@@ -485,8 +485,8 @@ posistruct_t* xy_DWORD_17DEC0_spritestr_orig;
 
 doublebyte doublebyte_conv(uint16_t a2) {
 	doublebyte result;
-	result.byte1 = a2 && 0xff;
-	result.byte2 = a2 && 0xff00;
+	result.byte1 = a2 & 0xff;
+	result.byte2 = (a2 & 0xff00) >> 8;
 	return result;
 };
 
@@ -525,9 +525,9 @@ void support_begin() {
 		//x_D41A0_BYTEARRAY_4_struct.player_name_57 =new char[256];
 		//x_D41A0_BYTEARRAY_4_struct.savestring_89 = new char[256];
 
-	x_BYTE_14B4E0 = new uint8_t[65536];
+	x_BYTE_14B4E0_second_heightmap = new uint8_t[65536];
 	off_D41A8_sky = new uint8_t[65536];
-	memcpy(off_D41A8_sky, &x_BYTE_14B4E0, 4);
+	memcpy(off_D41A8_sky, &x_BYTE_14B4E0_second_heightmap, 4);
 
 	xy_DWORD_17DED4_spritestr = new posistruct_t[1000];
 	xy_DWORD_17DEC0_spritestr_orig = new posistruct_t[1000];
@@ -554,7 +554,7 @@ void support_end() {
 		//free(x_D41A0_BYTEARRAY_4_struct.player_name_57);
 		//if(x_D41A0_BYTEARRAY_4_struct.savestring_89)delete(x_D41A0_BYTEARRAY_4_struct.savestring_89);
 
-	if (x_BYTE_14B4E0)delete(x_BYTE_14B4E0);
+	if (x_BYTE_14B4E0_second_heightmap)delete(x_BYTE_14B4E0_second_heightmap);
 	if (off_D41A8_sky)delete(off_D41A8_sky);
 
 	if (xy_DWORD_17DED4_spritestr)delete(xy_DWORD_17DED4_spritestr);
@@ -790,7 +790,7 @@ uint32_t compare_with_snapshot_D41A0(char* filename, uint8_t* adress, uint32_t a
 	return(i);
 };
 
-uint32_t compare_with_sequence_E7EE0(char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size1, uint32_t size2, uint8_t* origbyte, uint8_t* copybyte, long offset) {
+uint32_t compare_with_sequence_E7EE0(char* filename, uint8_t* adress, uint32_t  /*adressdos*/, uint32_t count, uint32_t size1, uint32_t size2, uint8_t* origbyte, uint8_t* copybyte, long offset) {
 	char findnamec[500];
 	uint8_t* buffer = (uint8_t*)malloc(size2);
 	FILE* fptestepc;
@@ -839,7 +839,7 @@ uint32_t compare_with_sequence_E7EE0(char* filename, uint8_t* adress, uint32_t a
 	return(i);
 };
 
-uint32_t compare_with_sequence_D41A0(char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, long offset) {
+uint32_t compare_with_sequence_D41A0(char* filename, uint8_t* adress, uint32_t  /*adressdos*/, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, long offset) {
 	char findnamec[500];
 	uint8_t* buffer = (uint8_t*)malloc(size);
 	FILE* fptestepc;
@@ -995,7 +995,7 @@ uint32_t compare_with_sequence_EA3E4(char* filename, type_str_0x6E8E** adress, u
 	return(1);
 };
 
-uint32_t compare_with_sequence_D41A0_4(char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, long offset) {
+uint32_t compare_with_sequence_D41A0_4(char* filename, uint8_t* adress, uint32_t  /*adressdos*/, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, long offset) {
 	char findnamec[500];
 	uint8_t* buffer = (uint8_t*)malloc(size);
 	FILE* fptestepc;
@@ -1050,7 +1050,7 @@ int test_F2C20ar_id_pointer(uint32_t adress) {
 	return 0;
 }
 
-uint32_t compare_with_sequence_x_DWORD_F2C20ar(char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, int* posdiff) {
+uint32_t compare_with_sequence_x_DWORD_F2C20ar(char* filename, uint8_t* adress, uint32_t  /*adressdos*/, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, int* posdiff) {
 	char findnamec[500];
 	uint8_t* buffer = (uint8_t*)malloc(size);
 	FILE* fptestepc;
@@ -1101,7 +1101,7 @@ uint32_t compare_with_sequence_x_DWORD_F2C20ar(char* filename, uint8_t* adress, 
 	return(diffindex);
 };
 
-uint32_t compare_with_sequence_array_E2A74(char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size1, uint32_t size2, uint8_t* origbyte, uint8_t* copybyte, long offset) {
+uint32_t compare_with_sequence_array_E2A74(char* filename, uint8_t* adress, uint32_t  /*adressdos*/, uint32_t count, uint32_t size1, uint32_t size2, uint8_t* origbyte, uint8_t* copybyte, long offset) {
 	char findnamec[500];
 	uint8_t* buffer = (uint8_t*)malloc(size2);
 	FILE* fptestepc;
@@ -1150,7 +1150,7 @@ uint32_t compare_with_sequence_array_E2A74(char* filename, uint8_t* adress, uint
 	return(i);
 };
 
-uint32_t compare_with_sequence_array_222BD3(char* filename, uint8_t* adress, uint32_t adressdos, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, int* posdiff) {
+uint32_t compare_with_sequence_array_222BD3(char* filename, uint8_t* adress, uint32_t  /*adressdos*/, uint32_t count, uint32_t size, uint8_t* origbyte, uint8_t* copybyte, int* posdiff) {
 	char findnamec[500];
 	uint8_t* buffer = (uint8_t*)malloc(size);
 	FILE* fptestepc;
@@ -1201,7 +1201,7 @@ uint32_t compare_with_sequence_array_222BD3(char* filename, uint8_t* adress, uin
 	return(i);
 };
 
-uint32_t compare_with_sequence(char* filename, uint8_t* adress, uint32_t adressdos, long count, long size1, uint32_t size2, uint8_t* origbyte, uint8_t* copybyte, long offset) {
+uint32_t compare_with_sequence(char* filename, uint8_t* adress, uint32_t  /*adressdos*/, long count, long size1, uint32_t size2, uint8_t* origbyte, uint8_t* copybyte, long offset) {
 	char findnamec[500];
 	uint8_t* buffer = (uint8_t*)malloc(size2);
 	FILE* fptestepc;
@@ -1286,7 +1286,7 @@ void mine_texts(char* filename, uint32_t adressdos, uint32_t count, char* outfil
 		}
 
 		outtext[adressadd] = 0;
-		sprintf(outtext2, "char* off_%05X[1]={%s};\n", 0xDB06C - 0x1131 + adressaddall, outtext);
+		sprintf(outtext2, "char* off_%05lX[1]={%s};\n", 0xDB06C - 0x1131 + adressaddall, outtext);
 		if (strlen(outtext2) > 1)
 			fwrite(outtext2, strlen(outtext2), 1, fileout);
 	}
@@ -1469,7 +1469,7 @@ const int bytesPerPixel = 4; /// red, green, blue
 const int fileHeaderSize = 14;
 const int infoHeaderSize = 40;
 
-unsigned char* createBitmapFileHeader(int height, int width, int pitch, int paddingSize) {
+unsigned char* createBitmapFileHeader(int height, int  /*width*/, int pitch, int paddingSize) {
 	int fileSize = fileHeaderSize + infoHeaderSize + (/*bytesPerPixel*width*/pitch + paddingSize) * height;
 
 	static unsigned char fileHeader[] = {

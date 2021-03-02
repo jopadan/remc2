@@ -29,7 +29,16 @@
 **/Netherw
 /debug.txt
 **/CD_Files
+**/biggraphics
+**/music-ogg
+**/config.ini
 
 /build*
 .flatpak*
 
+!enhancedassets/*
+
+
+x64/debug.txt
+
+remc2/editor/debug.txt

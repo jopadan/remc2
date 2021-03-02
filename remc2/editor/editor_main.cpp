@@ -17,19 +17,23 @@ using namespace std;
 //#include "../portability/port_time.h"
 //#include "../portability/port_sdl_vga_mouse.h"
 
-#include "SDL.h"
+#ifdef _MSC_VER
+	#include "SDL.h"
+#else
+    #include "SDL2/SDL.h"
+#endif
 #include "editor.h"
 
 int main(int argc, char* argv[])
 //int SDLmain(int argc, char** argv)
 {	
-	VGA_Init(gameResWidth, gameResHeight, maintainAspectRatio);
+	//VGA_Init(gameResWidth, gameResHeight, maintainAspectRatio);
 
 	support_begin();
 	//(*filearray_2aa18c[filearrayindex_BUILD00DATTAB].posistruct)[0x11].data
 
     editor_run();
-	VGA_close();
+	//VGA_close();
     return 0;
 }
 
