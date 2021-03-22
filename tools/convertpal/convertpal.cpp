@@ -121,33 +121,32 @@ bool get32color(unsigned char* content_data32, unsigned char x, int xindex2, int
 
 int main(int argc, char* argv[]) {
 #ifdef level1
-	const char* standartpal_filename = "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\\out-n.pal";
-	const char* data_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl32n0-0-src.data";
-	const char* outdata_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl128n0-0.data";
-	const char* orig32_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl32n0-0.data";
+	const char* standartpal_filename = "tools\\palletelight\\out-n.pal";
+	const char* data_filename = "data\\biggraphics\\bl32n0-0-src.data";
+	const char* outdata_filename = "data\\biggraphics\\bl128n0-0.data";
+	const char* orig32_filename = "data\\biggraphics\\bl32n0-0.data";
 #endif level1
 #ifdef level2
-	const char* standartpal_filename = "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-block.pal";
-	const char* data_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\block32-src.data";
-	const char* outdata_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\block128.data";
-	const char* orig32_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\block32.data";
+	const char* standartpal_filename = "tools\\palletelight\\out-block.pal";
+	const char* data_filename = "data\\biggraphics\\block32-src.data";
+	const char* outdata_filename = "data\\biggraphics\\block128.data";
+	const char* orig32_filename = "data\\biggraphics\\block32.data";
 #endif level2
 #ifdef level4
-	const char* standartpal_filename = "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-c.pal";
-	const char* data_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl32c0-0-src.data";
-	const char* outdata_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl128c0-0.data";
-	const char* orig32_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl32c0-0.data";
+	const char* standartpal_filename = "tools\\palletelight\\out-c.pal";
+	const char* data_filename = "data\\biggraphics\\bl32c0-0-src.data";
+	const char* outdata_filename = "data\\biggraphics\\bl128c0-0.data";
+	const char* orig32_filename = "data\\biggraphics\\bl32c0-0.data";
 #endif level4
 #ifdef level25
-	const char* standartpal_filename = "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\\out-f.pal";
-	const char* data_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl32f0-0-src.data";
-	const char* outdata_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl128f0-0.data";
-	const char* orig32_filename = "c:\\prenos\\remc2\\Debug\\biggraphics\\bl32f0-0.data";
+	const char* standartpal_filename = "tools\\palletelight\\out-f.pal";
+	const char* data_filename = "data\\biggraphics\\bl32f0-0-src.data";
+	const char* outdata_filename = "data\\biggraphics\\bl128f0-0.data";
+	const char* orig32_filename = "data\\biggraphics\\bl32f0-0.data";
 #endif level25
 
 
-	FILE* fptr_stdpal;
-	fopen_s(&fptr_stdpal, standartpal_filename, "rb");
+	FILE* fptr_stdpal = fopen(standartpal_filename, "rb");
 	fseek(fptr_stdpal, 0L, SEEK_END);
 	long szstd = ftell(fptr_stdpal);
 	fseek(fptr_stdpal, 0L, SEEK_SET);
@@ -155,8 +154,7 @@ int main(int argc, char* argv[]) {
 	fread(content_stdpal, szstd, 1, fptr_stdpal);
 	fclose(fptr_stdpal);
 
-	FILE* fptr_stdorig32;
-	fopen_s(&fptr_stdorig32, orig32_filename, "rb");
+	FILE* fptr_stdorig32 = fopen(orig32_filename, "rb");
 	fseek(fptr_stdorig32, 0L, SEEK_END);
 	long szstdorig32 = ftell(fptr_stdorig32);
 	fseek(fptr_stdorig32, 0L, SEEK_SET);
@@ -164,8 +162,7 @@ int main(int argc, char* argv[]) {
 	fread(content_data32, szstdorig32, 1, fptr_stdorig32);
 	fclose(fptr_stdorig32);
 	/*
-	FILE* fptr_atyppal;
-	fopen_s(&fptr_atyppal, atyppal_filename, "rb");
+	FILE* fptr_atyppal = fopen(atyppal_filename, "rb");
 	fseek(fptr_atyppal, 0L, SEEK_END);
 	long szatyp = ftell(fptr_atyppal);
 	fseek(fptr_atyppal, 0L, SEEK_SET);
@@ -190,8 +187,7 @@ int main(int argc, char* argv[]) {
 			}
 		}
 		*/
-	FILE* fptr_data;
-	fopen_s(&fptr_data, data_filename, "rb");
+	FILE* fptr_data = fopen(data_filename, "rb");
 	fseek(fptr_data, 0L, SEEK_END);
 	long szdata = ftell(fptr_data);
 	fseek(fptr_data, 0L, SEEK_SET);
@@ -307,8 +303,7 @@ int main(int argc, char* argv[]) {
 //watercolor2[watercolorindex2++] = 0xa2;
 #endif level25
 
-	FILE* fptw_outdata;
-	fopen_s(&fptw_outdata, outdata_filename, "wb");
+	FILE* fptw_outdata = fopen(outdata_filename, "wb");
 
 #ifdef RGBA
 		for (int i = 0; i < szdata / 4; i++)
