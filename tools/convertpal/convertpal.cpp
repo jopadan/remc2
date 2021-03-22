@@ -121,28 +121,28 @@ bool get32color(unsigned char* content_data32, unsigned char x, int xindex2, int
 
 int main(int argc, char* argv[]) {
 #ifdef level1
-	const char* standartpal_filename = "tools\\palletelight\\out-n.pal";
-	const char* data_filename = "data\\biggraphics\\bl32n0-0-src.data";
-	const char* outdata_filename = "data\\biggraphics\\bl128n0-0.data";
-	const char* orig32_filename = "data\\biggraphics\\bl32n0-0.data";
+	const char* standartpal_filename = "tools/palletelight/out-n.pal";
+	const char* data_filename = "data/biggraphics/bl32n0-0-src.data";
+	const char* outdata_filename = "data/biggraphics/bl128n0-0.data";
+	const char* orig32_filename = "data/biggraphics/bl32n0-0.data";
 #endif level1
 #ifdef level2
-	const char* standartpal_filename = "tools\\palletelight\\out-block.pal";
-	const char* data_filename = "data\\biggraphics\\block32-src.data";
-	const char* outdata_filename = "data\\biggraphics\\block128.data";
-	const char* orig32_filename = "data\\biggraphics\\block32.data";
+	const char* standartpal_filename = "tools/palletelight/out-block.pal";
+	const char* data_filename = "data/biggraphics/block32-src.data";
+	const char* outdata_filename = "data/biggraphics/block128.data";
+	const char* orig32_filename = "data/biggraphics/block32.data";
 #endif level2
 #ifdef level4
-	const char* standartpal_filename = "tools\\palletelight\\out-c.pal";
-	const char* data_filename = "data\\biggraphics\\bl32c0-0-src.data";
-	const char* outdata_filename = "data\\biggraphics\\bl128c0-0.data";
-	const char* orig32_filename = "data\\biggraphics\\bl32c0-0.data";
+	const char* standartpal_filename = "tools/palletelight/out-c.pal";
+	const char* data_filename = "data/biggraphics/bl32c0-0-src.data";
+	const char* outdata_filename = "data/biggraphics/bl128c0-0.data";
+	const char* orig32_filename = "data/biggraphics/bl32c0-0.data";
 #endif level4
 #ifdef level25
-	const char* standartpal_filename = "tools\\palletelight\\out-f.pal";
-	const char* data_filename = "data\\biggraphics\\bl32f0-0-src.data";
-	const char* outdata_filename = "data\\biggraphics\\bl128f0-0.data";
-	const char* orig32_filename = "data\\biggraphics\\bl32f0-0.data";
+	const char* standartpal_filename = "tools/palletelight/out-f.pal";
+	const char* data_filename = "data/biggraphics/bl32f0-0-src.data";
+	const char* outdata_filename = "data/biggraphics/bl128f0-0.data";
+	const char* orig32_filename = "data/biggraphics/bl32f0-0.data";
 #endif level25
 
 
@@ -313,7 +313,7 @@ int main(int argc, char* argv[]) {
 	{
 
 		if (i % 1000)
-			printf("%f percent compledted\n",((float)i/(szdata / 3))*100);
+			printf("%f percent completed\n",((float)i/(szdata / 3))*100);
 
 		int xindex = (i/128) % 2;
 		int yindex = i / (128 * 128 * 2);
