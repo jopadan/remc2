@@ -1,25 +1,12 @@
-cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
-
-set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
+cmake_minimum_required(VERSION 3.19)
 
 project(remc2 LANGUAGES C CXX)
 
+include (GNUInstallDirs)
+include (FindPkgConfig)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-################################################################################
-# Set target arch type if empty. Visual studio solution generator provides it.
-################################################################################
-if(NOT CMAKE_VS_PLATFORM_NAME)
-    set(CMAKE_VS_PLATFORM_NAME "x86")
-endif()
-message("${CMAKE_VS_PLATFORM_NAME} architecture in use")
-
-if(NOT "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
-    message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not supported!")
-endif()
-
-
 
 ################################################################################
 # Conan setup
@@ -40,24 +27,22 @@ if (GITHUB_CI_COMPATIBILITY_PATH)
     set(SDL2_DIR "${GITHUB_CI_COMPATIBILITY_PATH}/cmake/SDL2")
     set(CMAKE_LIBRARY_PATH "${GITHUB_CI_COMPATIBILITY_PATH}")
 endif ()
-
-if (USE_64_BIT)
-    message("Use 64 bit")
-    set(FIND_LIBRARY_USE_LIB64_PATHS True)
-    set(CMAKE_LIBRARY_ARCHITECTURE x86_64)
-else ()
-    message("Use 32 bit")
-    set(CMAKE_FIND_LIBRARY_CUSTOM_LIB_SUFFIX "")
-    set(CMAKE_LIBRARY_ARCHITECTURE i686)
-endif ()
-
-find_package(SDL2 REQUIRED)
-find_package(SDL2_mixer REQUIRED)
-find_package(SDL2_ttf REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(PNG REQUIRED)
-
-
+pkg_search_module(ZLIB REQUIRED zlib)
+pkg_search_module(PNG REQUIRED libpng)
+pkg_search_module(PNG2 REQUIRED libpng2)
+pkg_search_module(PNG3 REQUIRED libpng3)
+pkg_search_module(OGG REQUIRED libogg)
+pkg_search_module(VORBIS REQUIRED libvorbis)
+pkg_search_module(CDIO REQUIRED libcdio)
+pkg_search_module(SDL2 REQUIRED libSDL2)
+pkg_search_module(SDL2_mixer REQUIRED libSDL2_mixer)
+pkg_search_module(SDL2_ttf REQUIRED libSDL2_ttf)
+pkg_search_module(SDL2_image REQUIRED libSDL2_image)
+pkg_search_module(SDL_MIXER_X OPTIONAL SDL-Mixer-X)
+pkg_search_module(KISS_SDL2 OPTIONAL kiss_sdl2)
+pkg_search_module(ADLMIDI REQUIRED libADLMIDI)
+pkg_search_module(OPNMIDI OPTIONAL libOPNMIDI)
+pkg_search_module(FLUIDSYNTH OPTIONAL fluidsynth)
 ################################################################################
 # Global configuration types
 ################################################################################
@@ -101,25 +86,6 @@ else()
 endif()
 
 ################################################################################
-# Global linker options
-################################################################################
-if(MSVC)
-    # remove default flags provided with CMake for MSVC
-    set(CMAKE_EXE_LINKER_FLAGS "")
-    set(CMAKE_MODULE_LINKER_FLAGS "")
-    set(CMAKE_SHARED_LINKER_FLAGS "")
-    set(CMAKE_STATIC_LINKER_FLAGS "")
-    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS}")
-    set(CMAKE_STATIC_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS}")
-    set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS}")
-endif()
-
-################################################################################
 # Use solution folders feature
 ################################################################################
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -127,16 +93,40 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-
-# dependencies
-set(libADLMIDI_STATIC TRUE)
-add_subdirectory(libADLMIDI-master)
-if (USE_64_BIT)
-    add_compile_definitions(COMPILE_FOR_64BIT)
-    set_target_properties(ADLMIDI_static PROPERTIES COMPILE_FLAGS "-m64" LINK_FLAGS "-m64")
-else ()
-    set_target_properties(ADLMIDI_static PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
-endif ()
         
-# remc2
-add_subdirectory(remc2)
+# remc2editor
+
+set(SOURCE_FILES_EDITOR
+    "editor.cpp"
+    "editor_main.cpp"
+    "editor.h"
+)
+foreach(FILE_ENTRY ${SOURCE_FILES_ENGINE} ${SOURCE_FILES__portability} ${SOURCE_FILES__libs__inih})
+  list(APPEND SOURCE_FILES_EDITOR "../${FILE_ENTRY}")
+endforeach()
+source_group("Source Files Editor" FILES ${SOURCE_FILES_EDITOR} )
+
+add_executable(remc2editor FILES ${SOURCE_FILES_EDITOR})
+
+target_compile_options(remc2editor PUBLIC ${SDL2_CFLAGS} ${SDL2_TTF_CFLAGS}
+	${SDL2_IMAGE_CFLAGS} ${SDL2_MIXER_LIBRARIES} ${PNG_LIBRARY}
+	${FINDFIRST_CFLAGS}
+	${ADLMIDI_CFLAGS} ${KISS_SDL2_CFLAGS})
+
+target_link_libraries(remc2editor PUBLIC 
+	${SDL2_LIBRARIES}
+	${SDL2_TTF_LIBRARIES}
+	${SDL2_IMAGE_LIBRARIES}
+	${SDL2_MIXER_LIBRARIES}
+	${PNG_LIBRARIES}
+	${FINDFIRST_LIBRARIES}
+    	${ADLMIDI_LIBRARIES}
+    	${KISS_SDL2_LIBRARIES}
+)
+
+target_include_directories(remc2editor PUBLIC
+   "${CMAKE_SOURCE_DIR}/include/inih"
+   "${CMAKE_SOURCE_DIR}/include/findfirst"
+)
+
+endif ()
