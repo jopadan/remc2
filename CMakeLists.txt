@@ -18,21 +18,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 pkg_search_module(ZLIB REQUIRED zlib)
 pkg_search_module(PNG REQUIRED libpng)
-pkg_search_module(PNG2 REQUIRED libpng2)
-pkg_search_module(PNG3 REQUIRED libpng3)
-pkg_search_module(OGG REQUIRED libogg)
-pkg_search_module(VORBIS REQUIRED libvorbis)
-pkg_search_module(CDIO REQUIRED libcdio)
-pkg_search_module(SDL2 REQUIRED libSDL2)
-pkg_search_module(SDL2_mixer REQUIRED libSDL2_mixer)
-pkg_search_module(SDL2_ttf REQUIRED libSDL2_ttf)
-pkg_search_module(SDL2_image REQUIRED libSDL2_image)
-pkg_search_module(SDL_MIXER_X OPTIONAL SDL-Mixer-X)
-pkg_search_module(KISS_SDL2 OPTIONAL kiss_sdl2)
+#pkg_search_module(OGG REQUIRED libogg)
+#pkg_search_module(VORBIS REQUIRED libvorbis)
+#pkg_search_module(CDIO REQUIRED libcdio)
+#pkg_search_module(SDL2 REQUIRED libSDL2)
+#pkg_search_module(SDL2_mixer REQUIRED libSDL2_mixer)
+#pkg_search_module(SDL2_ttf REQUIRED libSDL2_ttf)
+#pkg_search_module(SDL2_image REQUIRED libSDL2_image)
+#pkg_search_module(SDL_MIXER_X OPTIONAL SDL-Mixer-X)
+#pkg_search_module(KISS_SDL2 OPTIONAL kiss_sdl2)
 pkg_search_module(ADLMIDI REQUIRED libADLMIDI)
-pkg_search_module(OPNMIDI OPTIONAL libOPNMIDI)
-pkg_search_module(FLUIDSYNTH OPTIONAL fluidsynth)
-pkg_search_module(GTEST OPTIONAL gtest)
+pkg_search_module(OPNMIDI REQUIRED libOPNMIDI)
+#pkg_search_module(FLUIDSYNTH REQUIRED fluidsynth)
+#pkg_search_module(GTEST REQUIRED gtest)
 
 ################################################################################
 # Global compiler options
@@ -67,9 +65,9 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Source groups
 ################################################################################
-set(HEADER_FILES source_group)
-source_group("Header Files" FILES ${HEADER_FILES})
-set(SOURCE_FILES "remc2.cpp")
+#set(HEADER_FILES "")
+#source_group("Header Files" FILES ${HEADER_FILES})
+set(SOURCE_FILES "src/remc2.cpp")
 source_group("Source Files" FILES ${SOURCE_FILES})
 
 set(SOURCE_FILES_ENGINE
@@ -133,14 +131,14 @@ set(SOURCE_FILES__portability
     "src/portability/xmi2mid.cpp"
     "src/portability/xmi2mid.h"
 )
-source_group("Source Files\\portability" FILES ${SOURCE_FILES__src/portability})
+source_group("Source Files\\portability" FILES ${SOURCE_FILES__portability})
 
 set(ALL_FILES
-    ${HEADER_FILES}
+	#   ${HEADER_FILES}
     ${SOURCE_FILES}
     ${SOURCE_FILES_ENGINE}
     ${SOURCE_FILES__libs__inih}
-    ${SOURCE_FILES__src/portability}
+    ${SOURCE_FILES__portability}
 )
 
 ################################################################################
@@ -185,7 +183,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 # Unit tests
 ################################################################################
 
-add_executable(remc2unittests UnitTests.cpp)
+add_executable(remc2unittests src/UnitTests.cpp)
 target_include_directories(remc2unittests PUBLIC
     "${CMAKE_SOURCE_DIR}/libs/findfirst"
 )
@@ -194,6 +192,7 @@ target_link_libraries(remc2unittests PUBLIC
     ${GTEST_LIBRARIES}
     ${PTHREAD_LIBRARIES}
 )
+
 gtest_add_tests(TARGET      remc2unittests
                 TEST_SUFFIX .noArgs
                 TEST_LIST   noArgsTests
@@ -201,7 +200,6 @@ gtest_add_tests(TARGET      remc2unittests
 set_tests_properties(${noArgsTests}   PROPERTIES TIMEOUT 10)
 
 # editor
-add_subdirectory(editor)
 
 if (USE_SANITIZERS)
 	set(SANITIZER_OPTIONS
@@ -219,21 +217,21 @@ if (USE_SANITIZERS)
 	target_link_options(remc2editor PRIVATE ${SANITIZER_OPTIONS})
 endif ()
 
+
 # remc2editor
 
 set(SOURCE_FILES_EDITOR
-    "editor.cpp"
-    "editor_main.cpp"
-    "editor.h"
+    "src/editor/editor.cpp"
+    "src/editor/editor_main.cpp"
+    "src/editor/editor.h"
+    ${SOURCE_FILES_ENGINE}
+    ${SOURCE_FILES__portability}
+    ${SOURCE_FILES__libs__inih}
 )
-
-foreach(FILE_ENTRY ${SOURCE_FILES_ENGINE} ${SOURCE_FILES__portability} ${SOURCE_FILES__libs__inih})
-  list(APPEND SOURCE_FILES_EDITOR "../${FILE_ENTRY}")
-endforeach()
 
 source_group("Source Files Editor" FILES ${SOURCE_FILES_EDITOR} )
 
-add_executable(remc2editor FILES ${SOURCE_FILES_EDITOR})
+add_executable(remc2editor ${SOURCE_FILES_EDITOR})
 
 target_compile_options(remc2editor PUBLIC ${SDL2_CFLAGS} ${SDL2_TTF_CFLAGS}
 	${SDL2_IMAGE_CFLAGS} ${SDL2_MIXER_LIBRARIES} ${PNG_LIBRARY}
@@ -252,9 +250,18 @@ target_link_libraries(remc2editor PUBLIC
 )
 
 target_include_directories(remc2editor PUBLIC
-   "${CMAKE_SOURCE_DIR}/include/inih"
-   "${CMAKE_SOURCE_DIR}/include/findfirst"
+   "${CMAKE_SOURCE_DIR}/libs/inih"
+   "${CMAKE_SOURCE_DIR}/libs/findfirst"
 )
+
+add_executable(compressTMAPS "tools/compressTMAPS/compressTMAPS.cpp")
+add_executable(convertpal "tools/convertpal/convertpal.cpp")
+add_executable(decompressTMAPS "tools/decompressTMAPS/decompressTMAPS.cpp")
+add_executable(decompresTmaps "tools/decompresTmaps/decompresTmaps.cpp")
+add_executable(makeczmc2 "tools/makeczmc2/makeczmc2.cpp")
+add_executable(palletelight "tools/palletelight/palletelight.cpp")
+add_executable(test_cfs "tools/test_cfs/test_cfs.cpp")
+add_executable(xbrz "tools/xbrz/xbrz.cpp")
 
 install(
     TARGETS ${PROJECT_NAME}
@@ -276,4 +283,4 @@ install(
     DESTINATION bin
 )
 
-set(ROOT_NAMESPACE remc2
+set(ROOT_NAMESPACE remc2)
