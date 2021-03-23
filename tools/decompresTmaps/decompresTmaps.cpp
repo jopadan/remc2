@@ -2,6 +2,8 @@
 //
 
 #include <iostream>
+#include <cstdint>
+#include <cstring>
 
 typedef unsigned char Bit8u;
 typedef          int    int32;
@@ -402,9 +404,9 @@ int unpack_data_m1(vars_t * v)
 {
 	while (v->processed_size < v->input_size)
 	{
-		make_huftable(v, v->raw_table, _countof(v->raw_table));
-		make_huftable(v, v->len_table, _countof(v->len_table));
-		make_huftable(v, v->pos_table, _countof(v->pos_table));
+		make_huftable(v, v->raw_table, sizeof(v->raw_table));
+		make_huftable(v, v->len_table, sizeof(v->len_table));
+		make_huftable(v, v->pos_table, sizeof(v->pos_table));
 
 		int subchunks = input_bits_m1(v, 16);
 
@@ -725,7 +727,7 @@ int sub_9894C_decompress(Bit8u* a1, Bit8u* a2) {
 	//if (error_code == 0)return 0;
 	return error_code;
 }
-int sub_70C60_decompress_tmap(unsigned __int16 a1, Bit8u* a2)//251c60
+int sub_70C60_decompress_tmap(uint16_t a1, Bit8u* a2)//251c60
 {
 	//int v2; // edi
 	int v3; // ebx
@@ -746,7 +748,7 @@ int sub_70C60_decompress_tmap(unsigned __int16 a1, Bit8u* a2)//251c60
 	}
 	else
 	{
-		printf("ERROR decompressing tmap%03d\n");
+		printf("ERROR decompressing tmap%03d\n", *a2);
 		result = -2;
 	}
 	return result;
@@ -756,19 +758,19 @@ signed int sub_71CD0(int a1)//252cd0
 {
 	int i; // edx
 
-	for (i = 0; (signed __int16)i < (signed int) * (unsigned __int16*)(a1 + 22); i++)
+	for (i = 0; (int16_t)i < (signed int) * (uint16_t*)(a1 + 22); i++)
 	{
-		if (!*(x_DWORD*)(14 * (signed __int16)i + *(x_DWORD*)(a1 + 8) + 4))
+		if (!*(x_DWORD*)(14 * (int16_t)i + *(x_DWORD*)(a1 + 8) + 4))
 			return i;
 	}
 	return -1;
 }
 
-int sub_71E70(int a1, unsigned int a2, __int16 a3)//252e70
+int sub_71E70(int a1, unsigned int a2, int16_t a3)//252e70
 {
-	signed __int16 v3; // si
-	signed __int16 v4; // ax
-	signed __int16 v5; // dx
+	int16_t v3; // si
+	int16_t v4; // ax
+	int16_t v5; // dx
 	int v6; // ecx
 	int v7; // eax
 	int result; // eax
@@ -789,7 +791,7 @@ int sub_71E70(int a1, unsigned int a2, __int16 a3)//252e70
 			*(x_WORD*)(*(x_DWORD*)(a1 + 8) + v7 + 12) = a3;
 			*(x_DWORD*)(a1 + 4) -= a2;
 			*(x_WORD*)(*(x_DWORD*)(a1 + 8) + v7 + 8) = *(x_WORD*)(a1 + 20);
-			*(x_DWORD*)(*(x_DWORD*)(a1 + 12) + 4 * (unsigned __int16)(*(x_WORD*)(a1 + 20))++) = *(x_DWORD*)(a1 + 8) + 14 * v6;
+			*(x_DWORD*)(*(x_DWORD*)(a1 + 12) + 4 * (uint16_t)(*(x_WORD*)(a1 + 20))++) = *(x_DWORD*)(a1 + 8) + 14 * v6;
 		}
 	}
 	if (v3 <= -1)
@@ -805,17 +807,17 @@ int x_DWORD_F5F10[504]; // idb
 int x_DWORD_E9C28; // weak
 int x_DWORD_E9C08; // weak
 
-int sub_721C0(unsigned __int16* a1, int* a2, __int16 a3)//2531c0
+int sub_721C0(uint16_t* a1, int* a2, int16_t a3)//2531c0
 {
-	signed __int16 v3; // cx
-	signed __int16 v4; // si
-	signed __int16 i; // bx
+	int16_t v3; // cx
+	int16_t v4; // si
+	int16_t i; // bx
 	x_DWORD* v6; // edx
 	int v7; // ebx
 	int v8; // ecx
-	__int16 v9; // ST08_2
+	int16_t v9; // ST08_2
 	int v10; // edx
-	signed __int16 v12; // [esp+Ch] [ebp-4h]
+	int16_t v12; // [esp+Ch] [ebp-4h]
 
 	v3 = -1;
 	v4 = -1;
@@ -838,7 +840,7 @@ int sub_721C0(unsigned __int16* a1, int* a2, __int16 a3)//2531c0
 	if (v12 <= -1)
 		return 0;
 	v7 = *a2;
-	v8 = *(unsigned __int16*)(*a2 + 4) * *(unsigned __int16*)(*a2 + 2);
+	v8 = *(uint16_t*)(*a2 + 4) * *(uint16_t*)(*a2 + 2);
 	v9 = *(x_WORD*)(v8 + *a2 + 6);
 	v10 = 28 * v12;
 	*(x_DWORD*)(v10 + *(x_DWORD*)(a1 + 1) + 4) = (x_DWORD)a2;
@@ -855,11 +857,11 @@ int sub_721C0(unsigned __int16* a1, int* a2, __int16 a3)//2531c0
 	return v10 + *(x_DWORD*)(a1 + 1);
 }
 
-void sub_70F50(unsigned __int16 a1)//251f50
+void sub_70F50(uint16_t a1)//251f50
 {
 	int index; // eax
-	unsigned __int16 v2; // bx
-	unsigned __int16 i; // si
+	uint16_t v2; // bx
+	uint16_t i; // si
 	int v4; // edi
 	int v5; // [esp+0h] [ebp-Ch]
 	int v6; // [esp+8h] [ebp-4h]
@@ -875,7 +877,7 @@ void sub_70F50(unsigned __int16 a1)//251f50
 		v6 = i;
 		if (!x_DWORD_F66F0[i])
 		{
-			index = sub_71E70(x_DWORD_E9C28, (unsigned __int16)(4 * ((unsigned int)(*(x_DWORD*)index + 13) >> 2)), i);
+			index = sub_71E70(x_DWORD_E9C28, (uint16_t)(4 * ((unsigned int)(*(x_DWORD*)index + 13) >> 2)), i);
 			v4 = index;
 			if (index)
 			{
@@ -887,7 +889,7 @@ void sub_70F50(unsigned __int16 a1)//251f50
 					x_DWORD_F5730[v6] = v5;
 					index = x_DWORD_F66F0[v6];
 					if (**(x_BYTE * *)index & 1)
-						index = sub_721C0((unsigned __int16*)x_DWORD_E9C08, (int*)index, i);
+						index = sub_721C0((uint16_t*)x_DWORD_E9C08, (int*)index, i);
 					if (v2 < 0x1E0u)
 					{
 						if (v2 != 311)
@@ -1361,11 +1363,11 @@ void sub_71410_process_tmaps()//252410
 		if (v0[3])
 		{
 			if (!v0[4])
-				v0[4] = *(unsigned __int16*)(v1 + 4) * v0[3] / *(unsigned __int16*)(v1 + 2);
+				v0[4] = *(uint16_t*)(v1 + 4) * v0[3] / *(uint16_t*)(v1 + 2);
 		}
 		else
 		{
-			v0[3] = *(unsigned __int16*)(v1 + 2) * v0[4] / *(unsigned __int16*)(v1 + 4);
+			v0[3] = *(uint16_t*)(v1 + 2) * v0[4] / *(uint16_t*)(v1 + 4);
 		}
 		v0 += 7;
 		*((x_BYTE*)v0 - 2) = *(x_BYTE*)(v1 + 1);
@@ -1375,8 +1377,8 @@ void sub_71410_process_tmaps()//252410
 
 void main2()
 {
-	unsigned __int16 v0; // bx
-	//__int16 result; // ax
+	uint16_t v0; // bx
+	//int16_t result; // ax
 
 	v0 = 0;
 	do
@@ -1580,8 +1582,8 @@ int main() {
 	//pstrx.var32_end_buffer = &end;
 	sub_9A32D_malloc_open_unpack(pstrx);
 	sub_71410_process_tmaps();
-	unsigned __int16 v0; // bx
-	//__int16 result; // ax
+	uint16_t v0; // bx
+	//int16_t result; // ax
 
 	v0 = 0;
 	do
