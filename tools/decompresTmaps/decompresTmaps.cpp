@@ -5,108 +5,89 @@
 #include <cstdint>
 #include <cstring>
 
-typedef unsigned char Bit8u;
-typedef          int    int32;
-typedef unsigned int Bit32u;
-typedef   signed int Bit32s;
-typedef          char   int8;
-typedef   signed char   sint8;
-typedef unsigned char   uint8;
-typedef          short  int16;
-typedef   signed short  sint16;
-typedef unsigned short  uint16;
-typedef          int    int32;
-typedef   signed int    sint32;
-typedef unsigned int    uint32;
-#define x_DWORD int32
-#define x_WORD int16
-#define x_BYTE int8
-typedef unsigned short Bit16u;
-
 #define RNC_SIGN 0x524E43 // RNC
 #define RNC_HEADER_SIZE 0x12
 #define MAX_BUF_SIZE 0x100000
 
-
-FILE* x_DWORD_DB73C_tmapsfile;//x_DWORD_DAF50[0x7ec]
-Bit8u* TMAPS00TAB_BEGIN_BUFFER = 0;//2c7ed0
-Bit32s mylseek(FILE* filedesc, x_DWORD position, char type) {
+FILE* int32_t_DB73C_tmapsfile;//int32_t_DAF50[0x7ec]
+uint8_t* TMAPS00TAB_BEGIN_BUFFER = 0;//2c7ed0
+int32_t mylseek(FILE* filedesc, int32_t position, char type) {
 	return fseek(filedesc, position, type);
 };
-x_DWORD x_lseek(FILE* filedesc, x_DWORD position, char type) {
+int32_t x_lseek(FILE* filedesc, int32_t position, char type) {
 	return mylseek(filedesc, position, type);
 };
 int sub_9891E_seek(FILE* filedecs, int position, char type)//27991e
 {
 	return x_lseek(filedecs, position, type);
 }
-// AA7C0: using guessed type x_DWORD lseek(x_DWORD, x_DWORD, char);
-size_t x_read(FILE* descriptor, Bit8u* data, Bit32u size) {
+// AA7C0: using guessed type int32_t lseek(int32_t, int32_t, char);
+size_t x_read(FILE* descriptor, uint8_t* data, uint32_t size) {
 	size_t result = fread(data, 1, size, descriptor);
 	return result;
 };
-size_t sub_988A7_read(FILE* a1, Bit8u* a2, int a3)//2798a7
+size_t sub_988A7_read(FILE* a1, uint8_t* a2, int a3)//2798a7
 {
 
 	return x_read(a1, a2, a3);
 }
 
 typedef struct huftable_s {
-	uint32 l1; // +0
-	uint16 l2; // +4
-	uint32 l3; // +6
-	uint16 bit_depth; // +A
+	uint32_t l1; // +0
+	uint16_t l2; // +4
+	uint32_t l3; // +6
+	uint16_t bit_depth; // +A
 } huftable_t;
 
 typedef struct vars_s {
-	uint16 max_matches;
-	uint16 enc_key;
-	uint32 pack_block_size;
-	uint16 dict_size;
-	uint32 method;
-	uint32 pus_mode;
-	uint32 input_size;
-	uint32 file_size;
+	uint16_t max_matches;
+	uint16_t enc_key;
+	uint32_t pack_block_size;
+	uint16_t dict_size;
+	uint32_t method;
+	uint32_t pus_mode;
+	uint32_t input_size;
+	uint32_t file_size;
 
 	// inner
-	uint32 bytes_left;
-	uint32 packed_size;
-	uint32 processed_size;
-	uint32 v7;
-	uint32 pack_block_pos;
-	uint16 pack_token, bit_count, v11;
-	uint16 last_min_offset;
-	uint32 v17;
-	uint32 pack_block_left_size;
-	uint16 match_count;
-	uint16 match_offset;
-	uint32 v20, v21;
-	uint32 bit_buffer;
+	uint32_t bytes_left;
+	uint32_t packed_size;
+	uint32_t processed_size;
+	uint32_t v7;
+	uint32_t pack_block_pos;
+	uint16_t pack_token, bit_count, v11;
+	uint16_t last_min_offset;
+	uint32_t v17;
+	uint32_t pack_block_left_size;
+	uint16_t match_count;
+	uint16_t match_offset;
+	uint32_t v20, v21;
+	uint32_t bit_buffer;
 
-	uint32 unpacked_size;
-	uint32 rnc_data_size;
-	uint16 unpacked_crc, unpacked_crc_real;
-	uint16 packed_crc;
-	uint32 leeway;
-	uint32 chunks_count;
+	uint32_t unpacked_size;
+	uint32_t rnc_data_size;
+	uint16_t unpacked_crc, unpacked_crc_real;
+	uint16_t packed_crc;
+	uint32_t leeway;
+	uint32_t chunks_count;
 
-	uint8* mem1;
-	uint8* pack_block_start;
-	uint8* pack_block_max;
-	uint8* pack_block_end;
-	uint16* mem2;
-	uint16* mem3;
-	uint16* mem4;
-	uint16* mem5;
+	uint8_t* mem1;
+	uint8_t* pack_block_start;
+	uint8_t* pack_block_max;
+	uint8_t* pack_block_end;
+	uint16_t* mem2;
+	uint16_t* mem3;
+	uint16_t* mem4;
+	uint16_t* mem5;
 
-	uint8* decoded;
-	uint8* window;
+	uint8_t* decoded;
+	uint8_t* window;
 
 	size_t read_start_offset, write_start_offset;
-	uint8* input, * output, * temp;
+	uint8_t* input, * output, * temp;
 	size_t input_offset, output_offset, temp_offset;
 
-	uint8 tmp_crc_data[2048];
+	uint8_t tmp_crc_data[2048];
 	huftable_t raw_table[16];
 	huftable_t pos_table[16];
 	huftable_t len_table[16];
@@ -116,28 +97,28 @@ typedef struct vars_s {
 #define RNC_HEADER_SIZE 0x12
 #define MAX_BUF_SIZE 0x100000
 
-uint8 read_byte(uint8* buf, size_t* offset)
+uint8_t read_byte(uint8_t* buf, size_t* offset)
 {
 	return buf[(*offset)++];
 }
 
-uint16 read_word_be(uint8* buf, size_t* offset)
+uint16_t read_word_be(uint8_t* buf, size_t* offset)
 {
-	uint8 b1 = read_byte(buf, offset);
-	uint8 b2 = read_byte(buf, offset);
+	uint8_t b1 = read_byte(buf, offset);
+	uint8_t b2 = read_byte(buf, offset);
 
 	return (b1 << 8) | b2;
 }
 
-uint32 read_dword_be(uint8 * buf, size_t * offset)
+uint32_t read_dword_be(uint8_t * buf, size_t * offset)
 {
-	uint16 w1 = read_word_be(buf, offset);
-	uint16 w2 = read_word_be(buf, offset);
+	uint16_t w1 = read_word_be(buf, offset);
+	uint16_t w2 = read_word_be(buf, offset);
 
 	return (w1 << 16) | w2;
 }
 
-static const uint16 crc_table[] = {
+static const uint16_t crc_table[] = {
 	0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
 	0xC601, 0x06C0, 0x0780, 0xC741, 0x0500, 0xC5C1, 0xC481, 0x0440,
 	0xCC01, 0x0CC0, 0x0D80, 0xCD41, 0x0F00, 0xCFC1, 0xCE81, 0x0E40,
@@ -172,9 +153,9 @@ static const uint16 crc_table[] = {
 	0x8201, 0x42C0, 0x4380, 0x8341, 0x4100, 0x81C1, 0x8081, 0x4040
 };
 
-uint16 crc_block(uint8 * buf, size_t offset, int size)
+uint16_t crc_block(uint8_t * buf, size_t offset, int size)
 {
-	uint16 crc = 0;
+	uint16_t crc = 0;
 
 	while (size--)
 	{
@@ -185,13 +166,13 @@ uint16 crc_block(uint8 * buf, size_t offset, int size)
 	return crc;
 }
 
-void read_buf(uint8 * dest, uint8 * source, size_t * offset, int size)
+void read_buf(uint8_t * dest, uint8_t * source, size_t * offset, int size)
 {
 	memmove(dest, &source[*offset], size);
 	*offset += size;
 }
 
-uint8 read_source_byte(vars_t * v)
+uint8_t read_source_byte(vars_t * v)
 {
 	if (v->pack_block_start == &v->mem1[0xFFFD])
 	{
@@ -217,9 +198,9 @@ uint8 read_source_byte(vars_t * v)
 	return *v->pack_block_start++;
 }
 
-uint32 input_bits_m2(vars_t * v, short count)
+uint32_t input_bits_m2(vars_t * v, short count)
 {
-	uint32 bits = 0;
+	uint32_t bits = 0;
 
 	while (count--)
 	{
@@ -243,17 +224,17 @@ uint32 input_bits_m2(vars_t * v, short count)
 
 
 
-uint32 input_bits_m1(vars_t * v, short count)
+uint32_t input_bits_m1(vars_t * v, short count)
 {
-	uint32 bits = 0;
-	uint32 prev_bits = 1;
+	uint32_t bits = 0;
+	uint32_t prev_bits = 1;
 
 	while (count--)
 	{
 		if (!v->bit_count)
 		{
-			uint8 b1 = read_source_byte(v);
-			uint8 b2 = read_source_byte(v);
+			uint8_t b1 = read_source_byte(v);
+			uint8_t b2 = read_source_byte(v);
 			v->bit_buffer = (v->pack_block_start[1] << 24) | (v->pack_block_start[0] << 16) | (b2 << 8) | b1;
 
 			v->bit_count = 16;
@@ -289,7 +270,7 @@ void clear_table(huftable_t * data, int count)
 	}
 }
 
-uint32 inverse_bits(uint32 value, int count)
+uint32_t inverse_bits(uint32_t value, int count)
 {
 	int i = 0;
 	while (count--)
@@ -308,7 +289,7 @@ uint32 inverse_bits(uint32 value, int count)
 void proc_20(huftable_t * data, int count)
 {
 	int val = 0;
-	uint32 div = 0x80000000;
+	uint32_t div = 0x80000000;
 	int bits_count = 1;
 
 	while (bits_count <= 16)
@@ -353,9 +334,9 @@ void make_huftable(vars_t * v, huftable_t * data, int count)
 	}
 }
 
-uint32 decode_table_data(vars_t * v, huftable_t * data)
+uint32_t decode_table_data(vars_t * v, huftable_t * data)
 {
-	uint32 i = 0;
+	uint32_t i = 0;
 
 	while (1)
 	{
@@ -373,13 +354,13 @@ uint32 decode_table_data(vars_t * v, huftable_t * data)
 	}
 }
 
-void write_buf(uint8 * dest, size_t * offset, uint8 * source, int size)
+void write_buf(uint8_t * dest, size_t * offset, uint8_t * source, int size)
 {
 	memmove(&dest[*offset], source, size);
 	*offset += size;
 }
 
-void write_decoded_byte(vars_t * v, uint8 b)
+void write_decoded_byte(vars_t * v, uint8_t b)
 {
 	if (&v->decoded[0xFFFF] == v->window)
 	{
@@ -392,7 +373,7 @@ void write_decoded_byte(vars_t * v, uint8 b)
 	v->unpacked_crc_real = crc_table[(v->unpacked_crc_real ^ b) & 0xFF] ^ (v->unpacked_crc_real >> 8);
 }
 
-void ror_w(uint16 * x)
+void ror_w(uint16_t * x)
 {
 	if (*x & 1)
 		* x = 0x8000 | (*x >> 1);
@@ -412,7 +393,7 @@ int unpack_data_m1(vars_t * v)
 
 		while (subchunks--)
 		{
-			uint32 data_length = decode_table_data(v, v->raw_table);
+			uint32_t data_length = decode_table_data(v, v->raw_table);
 			v->processed_size += data_length;
 
 			if (data_length)
@@ -530,7 +511,7 @@ int unpack_data_m2(vars_t * v)
 					}
 					else
 					{
-						uint32 data_length = (input_bits_m2(v, 4) << 2) + 12;
+						uint32_t data_length = (input_bits_m2(v, 4) << 2) + 12;
 						v->processed_size += data_length;
 
 						while (data_length--)
@@ -551,7 +532,7 @@ int do_unpack_data(vars_t* v)
 {
 	int start_pos = v->input_offset;
 
-	uint32 sign = read_dword_be(v->input, &v->input_offset);
+	uint32_t sign = read_dword_be(v->input, &v->input_offset);
 	if ((sign >> 8) != RNC_SIGN)
 		return 6;
 
@@ -569,8 +550,8 @@ int do_unpack_data(vars_t* v)
 	if (crc_block(v->input, v->input_offset, v->packed_size) != v->packed_crc)
 		return 4;
 
-	v->mem1 = (uint8*)malloc(0xFFFF);
-	v->decoded = (uint8*)malloc(0xFFFF);
+	v->mem1 = (uint8_t*)malloc(0xFFFF);
+	v->decoded = (uint8_t*)malloc(0xFFFF);
 	v->pack_block_start = &v->mem1[0xFFFD];
 	v->window = &v->decoded[v->dict_size];
 
@@ -579,7 +560,7 @@ int do_unpack_data(vars_t* v)
 	v->bit_buffer = 0;
 	v->processed_size = 0;
 
-	uint16 specified_key = v->enc_key;
+	uint16_t specified_key = v->enc_key;
 
 	int error_code = 0;
 	if (input_bits(v, 1) && !v->pus_mode)
@@ -653,7 +634,7 @@ vars_t* init_vars()
 	return v;
 }
 
-int sub_9894C_decompress(Bit8u* a1, Bit8u* a2) {
+int sub_9894C_decompress(uint8_t* a1, uint8_t* a2) {
 	vars_t* v = init_vars();
 	if (v->method == 1)
 	{
@@ -669,12 +650,12 @@ int sub_9894C_decompress(Bit8u* a1, Bit8u* a2) {
 	}
 
 	v->file_size = MAX_BUF_SIZE;
-	v->input = (uint8*)malloc(MAX_BUF_SIZE);
+	v->input = (uint8_t*)malloc(MAX_BUF_SIZE);
 
-	Bit32u signature = a1[0] + (a1[1] << 8) + (a1[2] << 16);
+	uint32_t signature = a1[0] + (a1[1] << 8) + (a1[2] << 16);
 	if (signature == 0x434e52)
 	{
-		Bit32u inputsize = a1[11] + (a1[10] << 8) + (a1[9] << 16) + (a1[8] << 24);
+		uint32_t inputsize = a1[11] + (a1[10] << 8) + (a1[9] << 16) + (a1[8] << 24);
 		memmove(v->input, a1, inputsize + 0x12);
 	}
 	else
@@ -684,7 +665,7 @@ int sub_9894C_decompress(Bit8u* a1, Bit8u* a2) {
 	//v->input = a1;
 
 	v->output = a2;
-	v->temp = (uint8*)malloc(MAX_BUF_SIZE);
+	v->temp = (uint8_t*)malloc(MAX_BUF_SIZE);
 
 	int error_code = 0;
 	/*switch (v->pus_mode)
@@ -727,18 +708,18 @@ int sub_9894C_decompress(Bit8u* a1, Bit8u* a2) {
 	//if (error_code == 0)return 0;
 	return error_code;
 }
-int sub_70C60_decompress_tmap(uint16_t a1, Bit8u* a2)//251c60
+int sub_70C60_decompress_tmap(uint16_t a1, uint8_t* a2)//251c60
 {
 	//int v2; // edi
 	int v3; // ebx
 	int result; // eax
 
-	if (x_DWORD_DB73C_tmapsfile == NULL)
-		return (int)x_DWORD_DB73C_tmapsfile;
+	if (int32_t_DB73C_tmapsfile == NULL)
+		return (int)int32_t_DB73C_tmapsfile;
 	//v2 = 10 * a1;
-	sub_9891E_seek(x_DWORD_DB73C_tmapsfile, *(x_DWORD*)(10 * a1 + TMAPS00TAB_BEGIN_BUFFER + 4), 0);//lseek
-	v3 = *(Bit32u*)& TMAPS00TAB_BEGIN_BUFFER[10 * (a1 + 1) + 4] - *(Bit32u*)& TMAPS00TAB_BEGIN_BUFFER[10 * a1 + 4];
-	if (sub_988A7_read(x_DWORD_DB73C_tmapsfile, a2, v3) != v3)
+	sub_9891E_seek(int32_t_DB73C_tmapsfile, *(int32_t*)(10 * a1 + TMAPS00TAB_BEGIN_BUFFER + 4), 0);//lseek
+	v3 = *(uint32_t*)& TMAPS00TAB_BEGIN_BUFFER[10 * (a1 + 1) + 4] - *(uint32_t*)& TMAPS00TAB_BEGIN_BUFFER[10 * a1 + 4];
+	if (sub_988A7_read(int32_t_DB73C_tmapsfile, a2, v3) != v3)
 		return -1;
 	result = sub_9894C_decompress(a2, a2);
 	if (result >= 0)
@@ -754,19 +735,19 @@ int sub_70C60_decompress_tmap(uint16_t a1, Bit8u* a2)//251c60
 	return result;
 }
 
-signed int sub_71CD0(int a1)//252cd0
+int32_t sub_71CD0(int a1)//252cd0
 {
 	int i; // edx
 
-	for (i = 0; (int16_t)i < (signed int) * (uint16_t*)(a1 + 22); i++)
+	for (i = 0; (int16_t)i < (int32_t) * (uint16_t*)(a1 + 22); i++)
 	{
-		if (!*(x_DWORD*)(14 * (int16_t)i + *(x_DWORD*)(a1 + 8) + 4))
+		if (!*(int32_t*)(14 * (int16_t)i + *(int32_t*)(a1 + 8) + 4))
 			return i;
 	}
 	return -1;
 }
 
-int sub_71E70(int a1, unsigned int a2, int16_t a3)//252e70
+int sub_71E70(int a1, uint32_t a2, int16_t a3)//252e70
 {
 	int16_t v3; // si
 	int16_t v4; // ax
@@ -776,7 +757,7 @@ int sub_71E70(int a1, unsigned int a2, int16_t a3)//252e70
 	int result; // eax
 
 	v3 = -1;
-	if (a2 < *(x_DWORD*)(a1 + 4))
+	if (a2 < *(int32_t*)(a1 + 4))
 	{
 		v4 = sub_71CD0(a1);
 		v5 = v4;
@@ -785,34 +766,34 @@ int sub_71E70(int a1, unsigned int a2, int16_t a3)//252e70
 		if (v4 > -1)
 		{
 			v7 = 14 * v4;
-			*(x_WORD*)(*(x_DWORD*)(a1 + 8) + v7 + 10) = v5;
-			*(x_DWORD*)(*(x_DWORD*)(a1 + 8) + v7 + 4) = a2;
-			*(x_DWORD*)(*(x_DWORD*)(a1 + 8) + v7) = *(x_DWORD*)a1 + *(x_DWORD*)(a1 + 16) - *(x_DWORD*)(a1 + 4);
-			*(x_WORD*)(*(x_DWORD*)(a1 + 8) + v7 + 12) = a3;
-			*(x_DWORD*)(a1 + 4) -= a2;
-			*(x_WORD*)(*(x_DWORD*)(a1 + 8) + v7 + 8) = *(x_WORD*)(a1 + 20);
-			*(x_DWORD*)(*(x_DWORD*)(a1 + 12) + 4 * (uint16_t)(*(x_WORD*)(a1 + 20))++) = *(x_DWORD*)(a1 + 8) + 14 * v6;
+			*(int16_t*)(*(int32_t*)(a1 + 8) + v7 + 10) = v5;
+			*(int32_t*)(*(int32_t*)(a1 + 8) + v7 + 4) = a2;
+			*(int32_t*)(*(int32_t*)(a1 + 8) + v7) = *(int32_t*)a1 + *(int32_t*)(a1 + 16) - *(int32_t*)(a1 + 4);
+			*(int16_t*)(*(int32_t*)(a1 + 8) + v7 + 12) = a3;
+			*(int32_t*)(a1 + 4) -= a2;
+			*(int16_t*)(*(int32_t*)(a1 + 8) + v7 + 8) = *(int16_t*)(a1 + 20);
+			*(int32_t*)(*(int32_t*)(a1 + 12) + 4 * (uint16_t)(*(int16_t*)(a1 + 20))++) = *(int32_t*)(a1 + 8) + 14 * v6;
 		}
 	}
 	if (v3 <= -1)
 		result = 0;
 	else
-		result = 14 * v3 + *(x_DWORD*)(a1 + 8);
+		result = 14 * v3 + *(int32_t*)(a1 + 8);
 	return result;
 }
 
-int x_DWORD_F66F0[504]; // idb//2c76f0
-int x_DWORD_F5730[504]; // idb
-int x_DWORD_F5F10[504]; // idb
-int x_DWORD_E9C28; // weak
-int x_DWORD_E9C08; // weak
+int int32_t_F66F0[504]; // idb//2c76f0
+int int32_t_F5730[504]; // idb
+int int32_t_F5F10[504]; // idb
+int int32_t_E9C28; // weak
+int int32_t_E9C08; // weak
 
 int sub_721C0(uint16_t* a1, int* a2, int16_t a3)//2531c0
 {
 	int16_t v3; // cx
 	int16_t v4; // si
 	int16_t i; // bx
-	x_DWORD* v6; // edx
+	int32_t* v6; // edx
 	int v7; // ebx
 	int v8; // ecx
 	int16_t v9; // ST08_2
@@ -823,9 +804,9 @@ int sub_721C0(uint16_t* a1, int* a2, int16_t a3)//2531c0
 	v4 = -1;
 	if (!*a1)
 		return 0;
-	for (i = 0; i < (signed int)* a1; i++)
+	for (i = 0; i < (int32_t)* a1; i++)
 	{
-		v6 = (x_DWORD*)(28 * i + *(x_DWORD*)(a1 + 1));
+		v6 = (int32_t*)(28 * i + *(int32_t*)(a1 + 1));
 		if (v6[1])
 		{
 			if (!*v6)
@@ -841,20 +822,20 @@ int sub_721C0(uint16_t* a1, int* a2, int16_t a3)//2531c0
 		return 0;
 	v7 = *a2;
 	v8 = *(uint16_t*)(*a2 + 4) * *(uint16_t*)(*a2 + 2);
-	v9 = *(x_WORD*)(v8 + *a2 + 6);
+	v9 = *(int16_t*)(v8 + *a2 + 6);
 	v10 = 28 * v12;
-	*(x_DWORD*)(v10 + *(x_DWORD*)(a1 + 1) + 4) = (x_DWORD)a2;
-	*(x_WORD*)(v10 + *(x_DWORD*)(a1 + 1) + 12) = 6;
-	*(x_WORD*)(v10 + *(x_DWORD*)(a1 + 1) + 14) = v8 + 6;
-	*(x_WORD*)(v10 + *(x_DWORD*)(a1 + 1) + 16) = v9;
-	*(x_WORD*)(v10 + *(x_DWORD*)(a1 + 1) + 18) = *(x_WORD*)(v7 + 2);
-	*(x_WORD*)(v10 + *(x_DWORD*)(a1 + 1) + 20) = *(x_WORD*)(v7 + 4);
-	*(x_DWORD*)(v10 + *(x_DWORD*)(a1 + 1) + 8) = v8 + 6;
-	*(x_WORD*)(v10 + *(x_DWORD*)(a1 + 1) + 22) = 1;
-	*(x_DWORD*)(v10 + *(x_DWORD*)(a1 + 1)) = 1;
-	*(x_WORD*)(v10 + *(x_DWORD*)(a1 + 1) + 24) = v12;
-	*(x_WORD*)(v10 + *(x_DWORD*)(a1 + 1) + 26) = a3;
-	return v10 + *(x_DWORD*)(a1 + 1);
+	*(int32_t*)(v10 + *(int32_t*)(a1 + 1) + 4) = (int32_t)a2;
+	*(int16_t*)(v10 + *(int32_t*)(a1 + 1) + 12) = 6;
+	*(int16_t*)(v10 + *(int32_t*)(a1 + 1) + 14) = v8 + 6;
+	*(int16_t*)(v10 + *(int32_t*)(a1 + 1) + 16) = v9;
+	*(int16_t*)(v10 + *(int32_t*)(a1 + 1) + 18) = *(int16_t*)(v7 + 2);
+	*(int16_t*)(v10 + *(int32_t*)(a1 + 1) + 20) = *(int16_t*)(v7 + 4);
+	*(int32_t*)(v10 + *(int32_t*)(a1 + 1) + 8) = v8 + 6;
+	*(int16_t*)(v10 + *(int32_t*)(a1 + 1) + 22) = 1;
+	*(int32_t*)(v10 + *(int32_t*)(a1 + 1)) = 1;
+	*(int16_t*)(v10 + *(int32_t*)(a1 + 1) + 24) = v12;
+	*(int16_t*)(v10 + *(int32_t*)(a1 + 1) + 26) = a3;
+	return v10 + *(int32_t*)(a1 + 1);
 }
 
 void sub_70F50(uint16_t a1)//251f50
@@ -868,35 +849,35 @@ void sub_70F50(uint16_t a1)//251f50
 
 	v5 = 0;// x_D41A0_BYTEARRAY_4_struct.byteindex_26;
 	//index = (int)TMAPS00TAB_BEGIN_BUFFER;
-	v2 = *(x_WORD*)(10 * a1 + TMAPS00TAB_BEGIN_BUFFER + 8);
-	for (i = *(x_WORD*)(10 * a1 + TMAPS00TAB_BEGIN_BUFFER + 8); i < 0x1F8u; i++)
+	v2 = *(int16_t*)(10 * a1 + TMAPS00TAB_BEGIN_BUFFER + 8);
+	for (i = *(int16_t*)(10 * a1 + TMAPS00TAB_BEGIN_BUFFER + 8); i < 0x1F8u; i++)
 	{
 		index = 10 * i + (int)TMAPS00TAB_BEGIN_BUFFER;
-		if (v2 != *(x_WORD*)(index + 8))
+		if (v2 != *(int16_t*)(index + 8))
 			break;
 		v6 = i;
-		if (!x_DWORD_F66F0[i])
+		if (!int32_t_F66F0[i])
 		{
-			index = sub_71E70(x_DWORD_E9C28, (uint16_t)(4 * ((unsigned int)(*(x_DWORD*)index + 13) >> 2)), i);
+			index = sub_71E70(int32_t_E9C28, (uint16_t)(4 * ((uint32_t)(*(int32_t*)index + 13) >> 2)), i);
 			v4 = index;
 			if (index)
 			{
-				index = sub_70C60_decompress_tmap(i, *(Bit8u * *)index);
+				index = sub_70C60_decompress_tmap(i, *(uint8_t * *)index);
 				if (index != -1)
 				{
-					x_DWORD_F5F10[v6] = v4;
-					x_DWORD_F66F0[v6] = v4;
-					x_DWORD_F5730[v6] = v5;
-					index = x_DWORD_F66F0[v6];
-					if (**(x_BYTE * *)index & 1)
-						index = sub_721C0((uint16_t*)x_DWORD_E9C08, (int*)index, i);
+					int32_t_F5F10[v6] = v4;
+					int32_t_F66F0[v6] = v4;
+					int32_t_F5730[v6] = v5;
+					index = int32_t_F66F0[v6];
+					if (**(int8_t * *)index & 1)
+						index = sub_721C0((uint16_t*)int32_t_E9C08, (int*)index, i);
 					if (v2 < 0x1E0u)
 					{
 						if (v2 != 311)
 							continue;
 					LABEL_14:
-						index = *(x_DWORD*)x_DWORD_F66F0[i];
-						*(x_BYTE*)index |= 0x20u;
+						index = *(int32_t*)int32_t_F66F0[i];
+						*(int8_t*)index |= 0x20u;
 						continue;
 					}
 					if (v2 <= 0x1E0u || v2 >= 0x1E8u && (v2 <= 0x1E8u || v2 == 496))
@@ -909,13 +890,13 @@ void sub_70F50(uint16_t a1)//251f50
 }
 
 char printbuffer[512];
-FILE* x_DWORD_DB740_tmaps00file;//x_DWORD_DAF50[0x7f0]
-FILE* x_DWORD_DB744_tmaps10file;//x_DWORD_DAF50[0x7f4]
-FILE* x_DWORD_DB748_tmaps20file;//x_DWORD_DAF50[0x7f8]
+FILE* int32_t_DB740_tmaps00file;//int32_t_DAF50[0x7f0]
+FILE* int32_t_DB744_tmaps10file;//int32_t_DAF50[0x7f4]
+FILE* int32_t_DB748_tmaps20file;//int32_t_DAF50[0x7f8]
 int myclose(FILE* descriptor) {
 	return fclose(descriptor);
 };
-FILE* mycreate(char* path, Bit32u flags) {
+FILE* mycreate(char* path, uint32_t flags) {
 	FILE* fp;
 	char path2[512] = "\0";
 	//pathfix(path, path2);//only for DOSBOX version
@@ -923,7 +904,7 @@ FILE* mycreate(char* path, Bit32u flags) {
 	fopen_s(&fp,path, "wb+");
 	return fp;
 };
-FILE* x_creat(char* path, Bit32u flags) {
+FILE* x_creat(char* path, uint32_t flags) {
 	return mycreate(path, flags);
 	/*FILE *fp;
 	char path2[512] = "\0";
@@ -934,8 +915,8 @@ FILE* x_creat(char* path, Bit32u flags) {
 int x_close(FILE* descriptor) {
 	return myclose(descriptor);
 };
-FILE* myopen(char* path, int pmode, Bit32u flags) {
-	//bool localDrive::FileOpen(DOS_File * * file, const char * name, Bit32u flags) {
+FILE* myopen(char* path, int pmode, uint32_t flags) {
+	//bool localDrive::FileOpen(DOS_File * * file, const char * name, uint32_t flags) {
 	const char* type;
 	if ((pmode == 0x222) && (flags == 0x40))type = "rb+";
 	else if ((pmode == 0x200) && (flags == 0x40))type = "rb+";
@@ -949,7 +930,7 @@ FILE* myopen(char* path, int pmode, Bit32u flags) {
 	fopen_s(&fp, path, type);
 	return fp;
 };
-FILE* x_sopen(char* path, int pmode, Bit32u flags) {
+FILE* x_sopen(char* path, int pmode, uint32_t flags) {
 	return myopen(path, pmode, flags);
 };
 FILE* sub_98817_open(char* pathname, int __pmode)//279817
@@ -975,31 +956,31 @@ void sub_70A60_open_tmaps()//251a60
 	//char printbuffer[512];//char v1; // [esp+0h] [ebp-40h]
 
 	sprintf_s(printbuffer, 512, "%s%s/%s/%s.dat", "c:/prenos/Magic2/mc2-orig", "/netherw", "cdata", "tmaps0-0");
-	x_DWORD_DB740_tmaps00file = sub_98817_open(printbuffer, 512);
-	if (x_DWORD_DB740_tmaps00file == NULL)
+	int32_t_DB740_tmaps00file = sub_98817_open(printbuffer, 512);
+	if (int32_t_DB740_tmaps00file == NULL)
 	{
 		sprintf_s(printbuffer, 512, "data/%s.dat", "tmaps0-0");
-		x_DWORD_DB740_tmaps00file = sub_98817_open(printbuffer, 512);
+		int32_t_DB740_tmaps00file = sub_98817_open(printbuffer, 512);
 	}
 	sprintf_s(printbuffer, 512, "%s%s/%s/%s.dat", "c:/prenos/Magic2/mc2-orig", "/netherw", "cdata", "tmaps1-0");
-	x_DWORD_DB744_tmaps10file = sub_98817_open(printbuffer, 512);
-	if (x_DWORD_DB744_tmaps10file == NULL)
+	int32_t_DB744_tmaps10file = sub_98817_open(printbuffer, 512);
+	if (int32_t_DB744_tmaps10file == NULL)
 	{
 		sprintf_s(printbuffer, 512, "data/%s.dat", "tmaps1-0");
-		x_DWORD_DB744_tmaps10file = sub_98817_open(printbuffer, 512);
+		int32_t_DB744_tmaps10file = sub_98817_open(printbuffer, 512);
 	}
 	sprintf_s(printbuffer, 512, "%s%s/%s/%s.dat", "c:/prenos/Magic2/mc2-orig", "/netherw", "cdata", "tmaps2-0");
-	x_DWORD_DB748_tmaps20file = sub_98817_open(printbuffer, 512);
-	if (x_DWORD_DB748_tmaps20file == NULL)
+	int32_t_DB748_tmaps20file = sub_98817_open(printbuffer, 512);
+	if (int32_t_DB748_tmaps20file == NULL)
 	{
 		sprintf_s(printbuffer, 512, "data/%s.dat", "tmaps2-0");
-		x_DWORD_DB748_tmaps20file = sub_98817_open(printbuffer, 512);
+		int32_t_DB748_tmaps20file = sub_98817_open(printbuffer, 512);
 	}
-	x_DWORD_DB73C_tmapsfile = x_DWORD_DB740_tmaps00file;
+	int32_t_DB73C_tmapsfile = int32_t_DB740_tmaps00file;
 	//return 1;
 }
 
-Bit16u x_WORD_D951C[0x980] = {//2aa51c
+uint16_t int16_t_D951C[0x980] = {//2aa51c
 0x0008, 0x212C, 0x002A, 0x0000, 0x00FA, 0x0100, 0x0000,
 0x000B, 0x212C, 0x002A, 0x0000, 0x00FA, 0x0100, 0x0000,
 0x0000, 0x212C, 0x002A, 0x0000, 0x0096, 0x0100, 0x0000,
@@ -1315,50 +1296,50 @@ void sub_70BF0_close_tmaps()//251bf0
 {
 	//int result; // eax
 
-	if (x_DWORD_DB740_tmaps00file != NULL)
+	if (int32_t_DB740_tmaps00file != NULL)
 	{
-		sub_98882_close(x_DWORD_DB740_tmaps00file);
-		x_DWORD_DB740_tmaps00file = NULL;
+		sub_98882_close(int32_t_DB740_tmaps00file);
+		int32_t_DB740_tmaps00file = NULL;
 	}
-	if (x_DWORD_DB744_tmaps10file != NULL)
+	if (int32_t_DB744_tmaps10file != NULL)
 	{
-		sub_98882_close(x_DWORD_DB744_tmaps10file);
-		x_DWORD_DB744_tmaps10file = NULL;
+		sub_98882_close(int32_t_DB744_tmaps10file);
+		int32_t_DB744_tmaps10file = NULL;
 	}
-	if (x_DWORD_DB748_tmaps20file != NULL)
+	if (int32_t_DB748_tmaps20file != NULL)
 	{
-		sub_98882_close(x_DWORD_DB748_tmaps20file);
-		x_DWORD_DB748_tmaps20file = NULL;
+		sub_98882_close(int32_t_DB748_tmaps20file);
+		int32_t_DB748_tmaps20file = NULL;
 	}
-	x_DWORD_DB73C_tmapsfile = NULL;
+	int32_t_DB73C_tmapsfile = NULL;
 	//return result;
 }
 
-Bit8u x_DWORD_180628b_screen_buffer[640*480];
+uint8_t int32_t_180628b_screen_buffer[640*480];
 void sub_71410_process_tmaps()//252410
 {
-	Bit16u* v0; // esi
-	Bit8u* v1; // ebx
-	Bit16u v2; // di
+	uint16_t* v0; // esi
+	uint8_t* v1; // ebx
+	uint16_t v2; // di
 
 	sub_70A60_open_tmaps();
-	v0 = x_WORD_D951C;
-	v1 = x_DWORD_180628b_screen_buffer;
+	v0 = int16_t_D951C;
+	v1 = int32_t_180628b_screen_buffer;
 	while (v0[3] || v0[4])
 	{
 		v2 = *v0;
-		memset((void*)v1, 0, *(Bit32u*)& TMAPS00TAB_BEGIN_BUFFER[10 * (*v0 + 1) + 4] - *(Bit32u*)& TMAPS00TAB_BEGIN_BUFFER[10 * *v0 + 4]);
+		memset((void*)v1, 0, *(uint32_t*)& TMAPS00TAB_BEGIN_BUFFER[10 * (*v0 + 1) + 4] - *(uint32_t*)& TMAPS00TAB_BEGIN_BUFFER[10 * *v0 + 4]);
 		if (sub_70C60_decompress_tmap(v2, v1) == -1)
 		{
-			*(x_WORD*)(v1 + 2) = 255;
-			*(x_WORD*)(v1 + 4) = 255;
-			*(x_BYTE*)(v1 + 1) = 1;
+			*(int16_t*)(v1 + 2) = 255;
+			*(int16_t*)(v1 + 4) = 255;
+			*(int8_t*)(v1 + 1) = 1;
 		}
-		if (!*(x_WORD*)(v1 + 4) || !*(x_WORD*)(v1 + 2))
+		if (!*(int16_t*)(v1 + 4) || !*(int16_t*)(v1 + 2))
 		{
-			*(x_WORD*)(v1 + 2) = 255;
-			*(x_WORD*)(v1 + 4) = 255;
-			*(x_BYTE*)(v1 + 1) = 1;
+			*(int16_t*)(v1 + 2) = 255;
+			*(int16_t*)(v1 + 4) = 255;
+			*(int8_t*)(v1 + 1) = 1;
 		}
 		if (v0[3])
 		{
@@ -1370,7 +1351,7 @@ void sub_71410_process_tmaps()//252410
 			v0[3] = *(uint16_t*)(v1 + 2) * v0[4] / *(uint16_t*)(v1 + 4);
 		}
 		v0 += 7;
-		*((x_BYTE*)v0 - 2) = *(x_BYTE*)(v1 + 1);
+		*((int8_t*)v0 - 2) = *(int8_t*)(v1 + 1);
 	}
 	sub_70BF0_close_tmaps();
 }
@@ -1384,7 +1365,7 @@ void main2()
 	do
 	{
 		//result = v0;
-		//if (x_BYTE_F5340[v0])
+		//if (int8_t_F5340[v0])
 			/*result = */sub_70F50(v0);
 		v0++;
 	} while (v0 < 0x1F8u);
@@ -1392,16 +1373,16 @@ void main2()
 }
 typedef struct {
 	char path[512];
-	Bit8u** var28_begin_buffer;//1C // asi buffer
-	Bit8u** var32_end_buffer;//20 // asi buffer
-	Bit32u var36_size_buffer;//24 //asi file size
-	Bit32u var40_alloc_type;//28
+	uint8_t** var28_begin_buffer;//1C // asi buffer
+	uint8_t** var32_end_buffer;//20 // asi buffer
+	uint32_t var36_size_buffer;//24 //asi file size
+	uint32_t var40_alloc_type;//28
 } Pathstruct;
 Pathstruct pstrx = { "c:/prenos/Magic2/mc2-orig/netherw/cdata/tmaps0-0.tab",&TMAPS00TAB_BEGIN_BUFFER,NULL,1389610,NULL };
 
-Bit8u* sub_9A2F5(Pathstruct path)//27B2f5
+uint8_t* sub_9A2F5(Pathstruct path)//27B2f5
 {
-	Bit8u* result; // eax
+	uint8_t* result; // eax
 	//2bac30
 	result = *path.var28_begin_buffer;//fix it 2bac30
 	//result = 0;//fix it
@@ -1422,7 +1403,7 @@ void* sub_83CD0_malloc2(size_t a1)//264cd0
 {
 	return malloc(a1);
 }
-Bit32s myfseek(FILE* filedesc, x_DWORD position, char type) {
+int32_t myfseek(FILE* filedesc, int32_t position, char type) {
 	return fseek(filedesc, position, type);
 };
 
@@ -1436,9 +1417,9 @@ long x_filelength(FILE* decriptor) {
 	myfseek(decriptor, 0, SEEK_SET); // seek back to beginning of file
 	return size;
 };
-signed int sub_AB9E1_get_file_unpack_size(char* a1)//28c9e1
+int32_t sub_AB9E1_get_file_unpack_size(char* a1)//28c9e1
 {
-	Bit8u v2[10]; // [esp+0h] [ebp-1Ch]
+	uint8_t v2[10]; // [esp+0h] [ebp-1Ch]
 	unsigned __int8 v3; // [esp+4h] [ebp-18h]
 	unsigned __int8 v4; // [esp+5h] [ebp-17h]
 	unsigned __int8 v5; // [esp+6h] [ebp-16h]
@@ -1486,19 +1467,19 @@ signed int sub_AB9E1_get_file_unpack_size(char* a1)//28c9e1
 	sub_98882_close(file);
 	return ret_size;
 }
-int sub_53E60_readfile_and_decompress(const char* path, Bit8u** a2)//234E60
+int sub_53E60_readfile_and_decompress(const char* path, uint8_t** a2)//234E60
 {
-	x_DWORD result; // eax
+	int32_t result; // eax
 	FILE* file; // ebx
-	Bit32u v4; // esi
+	uint32_t v4; // esi
 	file = sub_98817_open((char*)path, 0x200);//234E72 - 279817
-	result = (x_DWORD)file;
+	result = (int32_t)file;
 	if (result != NULL)
 	{
 		v4 = x_filelength(file);//234E82 - 2798DA
 		sub_988A7_read(file, *a2, v4);//234E8F - 2798A7
 		sub_98882_close(file);//234E98 - 279882
-		result = (x_DWORD)sub_9894C_decompress(*a2, *a2);//234ea2 - 27994c
+		result = (int32_t)sub_9894C_decompress(*a2, *a2);//234ea2 - 27994c
 		if (result >= 0)
 		{
 			if (!result)
@@ -1512,7 +1493,7 @@ int sub_53E60_readfile_and_decompress(const char* path, Bit8u** a2)//234E60
 	}
 	return result;
 }
-signed int sub_9A32D_malloc_open_unpack(Pathstruct path)//27B32d
+int32_t sub_9A32D_malloc_open_unpack(Pathstruct path)//27B32d
 {
 	//int v1; // edx
 	//int *v2; // eax
@@ -1530,12 +1511,12 @@ signed int sub_9A32D_malloc_open_unpack(Pathstruct path)//27B32d
 	{
 		if (path.var40_alloc_type & 1)
 		{
-			*(path.var28_begin_buffer) = (Bit8u*)sub_83D70_malloc1(path.var36_size_buffer);
+			*(path.var28_begin_buffer) = (uint8_t*)sub_83D70_malloc1(path.var36_size_buffer);
 			memset(*(path.var28_begin_buffer), 0, path.var36_size_buffer);
 		}
 		else
 		{
-			*(path.var28_begin_buffer) = (Bit8u*)sub_83CD0_malloc2(path.var36_size_buffer);
+			*(path.var28_begin_buffer) = (uint8_t*)sub_83CD0_malloc2(path.var36_size_buffer);
 			memset(*(path.var28_begin_buffer), 0, path.var36_size_buffer);
 		}
 		//v2 = *(int *)(path.var28_begin_buffer);
@@ -1550,12 +1531,12 @@ signed int sub_9A32D_malloc_open_unpack(Pathstruct path)//27B32d
 			return 0;
 		if (path.var40_alloc_type & 1)
 		{
-			*(path.var28_begin_buffer) = (Bit8u*)sub_83D70_malloc1(path.var36_size_buffer);//asi init a malloc bufferu
+			*(path.var28_begin_buffer) = (uint8_t*)sub_83D70_malloc1(path.var36_size_buffer);//asi init a malloc bufferu
 			memset(*(path.var28_begin_buffer), 0, path.var36_size_buffer);
 		}
 		else
 		{
-			*(path.var28_begin_buffer) = (Bit8u*)sub_83CD0_malloc2(path.var36_size_buffer);//asi init a malloc bufferu
+			*(path.var28_begin_buffer) = (uint8_t*)sub_83CD0_malloc2(path.var36_size_buffer);//asi init a malloc bufferu
 			memset(*(path.var28_begin_buffer), 0, path.var36_size_buffer);
 		}
 		//v4 = *(int **)path.var28_begin_buffer;
@@ -1576,8 +1557,8 @@ signed int sub_9A32D_malloc_open_unpack(Pathstruct path)//27B32d
 }
 
 int main() {
-	//Bit8u* begin;
-	//Bit8u* end;
+	//uint8_t* begin;
+	//uint8_t* end;
 	//pstrx.var28_begin_buffer = &begin;
 	//pstrx.var32_end_buffer = &end;
 	sub_9A32D_malloc_open_unpack(pstrx);
@@ -1589,7 +1570,7 @@ int main() {
 	do
 	{
 		//result = v0;
-		//if (x_BYTE_F5340[v0])
+		//if (int8_t_F5340[v0])
 		/*result = */sub_70F50(v0);
 		v0++;
 	} while (v0 < 0x1F8u);
