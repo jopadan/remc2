@@ -4,33 +4,16 @@
 #include <iostream>
 #include <cstdint>
 #include <cstring>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #define RNC_SIGN 0x524E43 // RNC
 #define RNC_HEADER_SIZE 0x12
 #define MAX_BUF_SIZE 0x100000
 
-FILE* int32_t_DB73C_tmapsfile;//int32_t_DAF50[0x7ec]
+FILE* tmapsfile;//int32_t_DAF50[0x7ec]
 uint8_t* TMAPS00TAB_BEGIN_BUFFER = 0;//2c7ed0
-int32_t mylseek(FILE* filedesc, int32_t position, char type) {
-	return fseek(filedesc, position, type);
-};
-int32_t x_lseek(FILE* filedesc, int32_t position, char type) {
-	return mylseek(filedesc, position, type);
-};
-int sub_9891E_seek(FILE* filedecs, int position, char type)//27991e
-{
-	return x_lseek(filedecs, position, type);
-}
-// AA7C0: using guessed type int32_t lseek(int32_t, int32_t, char);
-size_t x_read(FILE* descriptor, uint8_t* data, uint32_t size) {
-	size_t result = fread(data, 1, size, descriptor);
-	return result;
-};
-size_t sub_988A7_read(FILE* a1, uint8_t* a2, int a3)//2798a7
-{
-
-	return x_read(a1, a2, a3);
-}
 
 typedef struct huftable_s {
 	uint32_t l1; // +0
@@ -634,7 +617,7 @@ vars_t* init_vars()
 	return v;
 }
 
-int sub_9894C_decompress(uint8_t* a1, uint8_t* a2) {
+int decompress(uint8_t* a1, uint8_t* a2) {
 	vars_t* v = init_vars();
 	if (v->method == 1)
 	{
@@ -708,20 +691,20 @@ int sub_9894C_decompress(uint8_t* a1, uint8_t* a2) {
 	//if (error_code == 0)return 0;
 	return error_code;
 }
-int sub_70C60_decompress_tmap(uint16_t a1, uint8_t* a2)//251c60
+int decompress_tmap(uint16_t a1, uint8_t* a2)//251c60
 {
 	//int v2; // edi
 	int v3; // ebx
 	int result; // eax
 
-	if (int32_t_DB73C_tmapsfile == NULL)
-		return (int)int32_t_DB73C_tmapsfile;
+	if (tmapsfile == NULL)
+		return (int)tmapsfile;
 	//v2 = 10 * a1;
-	sub_9891E_seek(int32_t_DB73C_tmapsfile, *(int32_t*)(10 * a1 + TMAPS00TAB_BEGIN_BUFFER + 4), 0);//lseek
+	fseek(tmapsfile, *(int32_t*)(10 * a1 + TMAPS00TAB_BEGIN_BUFFER + 4), 0);//lseek
 	v3 = *(uint32_t*)& TMAPS00TAB_BEGIN_BUFFER[10 * (a1 + 1) + 4] - *(uint32_t*)& TMAPS00TAB_BEGIN_BUFFER[10 * a1 + 4];
-	if (sub_988A7_read(int32_t_DB73C_tmapsfile, a2, v3) != v3)
+	if(fread(a2, 1, v3, tmapsfile) != v3)
 		return -1;
-	result = sub_9894C_decompress(a2, a2);
+	result = decompress(a2, a2);
 	if (result >= 0)
 	{
 		if (!result)
@@ -862,7 +845,7 @@ void sub_70F50(uint16_t a1)//251f50
 			v4 = index;
 			if (index)
 			{
-				index = sub_70C60_decompress_tmap(i, *(uint8_t * *)index);
+				index = decompress_tmap(i, *(uint8_t * *)index);
 				if (index != -1)
 				{
 					int32_t_F5F10[v6] = v4;
@@ -890,9 +873,9 @@ void sub_70F50(uint16_t a1)//251f50
 }
 
 char printbuffer[512];
-FILE* int32_t_DB740_tmaps00file;//int32_t_DAF50[0x7f0]
-FILE* int32_t_DB744_tmaps10file;//int32_t_DAF50[0x7f4]
-FILE* int32_t_DB748_tmaps20file;//int32_t_DAF50[0x7f8]
+FILE* tmaps00file;//int32_t_DAF50[0x7f0]
+FILE* tmaps10file;//int32_t_DAF50[0x7f4]
+FILE* tmaps20file;//int32_t_DAF50[0x7f8]
 int myclose(FILE* descriptor) {
 	return fclose(descriptor);
 };
@@ -901,7 +884,7 @@ FILE* mycreate(char* path, uint32_t flags) {
 	char path2[512] = "\0";
 	//pathfix(path, path2);//only for DOSBOX version
 	//fp = fopen(path2, "wb+");
-	fopen_s(&fp,path, "wb+");
+	fp = fopen(path, "wb+");
 	return fp;
 };
 FILE* x_creat(char* path, uint32_t flags) {
@@ -927,56 +910,39 @@ FILE* myopen(char* path, int pmode, uint32_t flags) {
 	//pathfix(path, path2);//only for DOSBOX version
 	//if(file_exists(path2))
 
-	fopen_s(&fp, path, type);
+	fp = fopen(path, type);
 	return fp;
 };
 FILE* x_sopen(char* path, int pmode, uint32_t flags) {
 	return myopen(path, pmode, flags);
 };
-FILE* sub_98817_open(char* pathname, int __pmode)//279817
-{
-	FILE* file; // ST10_4
-
-
-	if (__pmode == 0x222)
-	{
-		file = x_creat(pathname, 0x1c0);
-		//x_setmode(v2, 0x200);
-		x_close(file);
-	}
-	return x_sopen(pathname, __pmode, 0x40);
-}
-int sub_98882_close(FILE* a1)//279882
-{
-	return x_close(a1);
-}
 
 void sub_70A60_open_tmaps()//251a60
 {
 	//char printbuffer[512];//char v1; // [esp+0h] [ebp-40h]
 
-	sprintf_s(printbuffer, 512, "%s%s/%s/%s.dat", "c:/prenos/Magic2/mc2-orig", "/netherw", "cdata", "tmaps0-0");
-	int32_t_DB740_tmaps00file = sub_98817_open(printbuffer, 512);
-	if (int32_t_DB740_tmaps00file == NULL)
+	sprintf(printbuffer, 512, "%s%s/%s/%s.dat", "c:/prenos/Magic2/mc2-orig", "/netherw", "cdata", "tmaps0-0");
+	tmaps00file = open(printbuffer, 512);
+	if (tmaps00file == NULL)
 	{
-		sprintf_s(printbuffer, 512, "data/%s.dat", "tmaps0-0");
-		int32_t_DB740_tmaps00file = sub_98817_open(printbuffer, 512);
+		sprintf(printbuffer, 512, "data/%s.dat", "tmaps0-0");
+		tmaps00file = open(printbuffer, 512);
 	}
-	sprintf_s(printbuffer, 512, "%s%s/%s/%s.dat", "c:/prenos/Magic2/mc2-orig", "/netherw", "cdata", "tmaps1-0");
-	int32_t_DB744_tmaps10file = sub_98817_open(printbuffer, 512);
-	if (int32_t_DB744_tmaps10file == NULL)
+	sprintf(printbuffer, 512, "%s%s/%s/%s.dat", "c:/prenos/Magic2/mc2-orig", "/netherw", "cdata", "tmaps1-0");
+	tmaps10file = open(printbuffer, 512);
+	if (tmaps10file == NULL)
 	{
-		sprintf_s(printbuffer, 512, "data/%s.dat", "tmaps1-0");
-		int32_t_DB744_tmaps10file = sub_98817_open(printbuffer, 512);
+		sprintf(printbuffer, 512, "data/%s.dat", "tmaps1-0");
+		tmaps10file = open(printbuffer, 512);
 	}
-	sprintf_s(printbuffer, 512, "%s%s/%s/%s.dat", "c:/prenos/Magic2/mc2-orig", "/netherw", "cdata", "tmaps2-0");
-	int32_t_DB748_tmaps20file = sub_98817_open(printbuffer, 512);
-	if (int32_t_DB748_tmaps20file == NULL)
+	sprintf(printbuffer, 512, "%s%s/%s/%s.dat", "c:/prenos/Magic2/mc2-orig", "/netherw", "cdata", "tmaps2-0");
+	tmaps20file = open(printbuffer, 512);
+	if (tmaps20file == NULL)
 	{
-		sprintf_s(printbuffer, 512, "data/%s.dat", "tmaps2-0");
-		int32_t_DB748_tmaps20file = sub_98817_open(printbuffer, 512);
+		sprintf(printbuffer, 512, "data/%s.dat", "tmaps2-0");
+		tmaps20file = open(printbuffer, 512);
 	}
-	int32_t_DB73C_tmapsfile = int32_t_DB740_tmaps00file;
+	tmapsfile = tmaps00file;
 	//return 1;
 }
 
@@ -1292,31 +1258,31 @@ uint16_t int16_t_D951C[0x980] = {//2aa51c
 0x212C, 0x002A, 0x0000, 0x04B0, 0x0100, 0x0000, 0x0000, 0x0000,
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xFF00, 0x0003, 0x00FA };
 
-void sub_70BF0_close_tmaps()//251bf0
+void close_tmaps()//251bf0
 {
 	//int result; // eax
 
-	if (int32_t_DB740_tmaps00file != NULL)
+	if (tmaps00file != NULL)
 	{
-		sub_98882_close(int32_t_DB740_tmaps00file);
-		int32_t_DB740_tmaps00file = NULL;
+		close(tmaps00file);
+		tmaps00file = NULL;
 	}
-	if (int32_t_DB744_tmaps10file != NULL)
+	if (tmaps10file != NULL)
 	{
-		sub_98882_close(int32_t_DB744_tmaps10file);
-		int32_t_DB744_tmaps10file = NULL;
+		close(tmaps10file);
+		tmaps10file = NULL;
 	}
-	if (int32_t_DB748_tmaps20file != NULL)
+	if (tmaps20file != NULL)
 	{
-		sub_98882_close(int32_t_DB748_tmaps20file);
-		int32_t_DB748_tmaps20file = NULL;
+		close(tmaps20file);
+		tmaps20file = NULL;
 	}
-	int32_t_DB73C_tmapsfile = NULL;
+	tmapsfile = NULL;
 	//return result;
 }
 
-uint8_t int32_t_180628b_screen_buffer[640*480];
-void sub_71410_process_tmaps()//252410
+uint8_t screen_buffer[640*480];
+void process_tmaps()//252410
 {
 	uint16_t* v0; // esi
 	uint8_t* v1; // ebx
@@ -1324,12 +1290,12 @@ void sub_71410_process_tmaps()//252410
 
 	sub_70A60_open_tmaps();
 	v0 = int16_t_D951C;
-	v1 = int32_t_180628b_screen_buffer;
+	v1 = screen_buffer;
 	while (v0[3] || v0[4])
 	{
 		v2 = *v0;
 		memset((void*)v1, 0, *(uint32_t*)& TMAPS00TAB_BEGIN_BUFFER[10 * (*v0 + 1) + 4] - *(uint32_t*)& TMAPS00TAB_BEGIN_BUFFER[10 * *v0 + 4]);
-		if (sub_70C60_decompress_tmap(v2, v1) == -1)
+		if (decompress_tmap(v2, v1) == -1)
 		{
 			*(int16_t*)(v1 + 2) = 255;
 			*(int16_t*)(v1 + 4) = 255;
@@ -1353,7 +1319,7 @@ void sub_71410_process_tmaps()//252410
 		v0 += 7;
 		*((int8_t*)v0 - 2) = *(int8_t*)(v1 + 1);
 	}
-	sub_70BF0_close_tmaps();
+	close_tmaps();
 }
 
 void main2()
@@ -1395,35 +1361,23 @@ uint8_t* sub_9A2F5(Pathstruct path)//27B2f5
 	return result;
 }
 
-void* sub_83D70_malloc1(int a1)//264d70
-{
-	return malloc(a1);
-}
-void* sub_83CD0_malloc2(size_t a1)//264cd0
-{
-	return malloc(a1);
-}
-int32_t myfseek(FILE* filedesc, int32_t position, char type) {
-	return fseek(filedesc, position, type);
-};
-
 long myftell(FILE* decriptor) {
 	return ftell(decriptor);
 };
 long x_filelength(FILE* decriptor) {
 	long size;
-	myfseek(decriptor, 0, SEEK_END); // seek to end of file
+	fseek(decriptor, 0, SEEK_END); // seek to end of file
 	size = myftell(decriptor); // get current file pointer
-	myfseek(decriptor, 0, SEEK_SET); // seek back to beginning of file
+	fseek(decriptor, 0, SEEK_SET); // seek back to beginning of file
 	return size;
 };
-int32_t sub_AB9E1_get_file_unpack_size(char* a1)//28c9e1
+int32_t get_file_unpack_size(char* a1)//28c9e1
 {
 	uint8_t v2[10]; // [esp+0h] [ebp-1Ch]
-	unsigned __int8 v3; // [esp+4h] [ebp-18h]
-	unsigned __int8 v4; // [esp+5h] [ebp-17h]
-	unsigned __int8 v5; // [esp+6h] [ebp-16h]
-	unsigned __int8 v6; // [esp+7h] [ebp-15h]
+	uint8_t v3; // [esp+4h] [ebp-18h]
+	uint8_t v4; // [esp+5h] [ebp-17h]
+	uint8_t v5; // [esp+6h] [ebp-16h]
+	uint8_t v6; // [esp+7h] [ebp-15h]
 	//char v7; // [esp+8h] [ebp-14h]
 	//char v8; // [esp+9h] [ebp-13h]
 	char v9; // [esp+Ah] [ebp-12h]
@@ -1447,10 +1401,11 @@ int32_t sub_AB9E1_get_file_unpack_size(char* a1)//28c9e1
 	//v9 = 'C';
 	//v10 = 1;
 	//v11 = 0;
-	file = sub_98817_open(a1, 512);
+	file = fopen(a1, "rb");
 	if (file == NULL)
 		return -1;
-	sub_988A7_read(file, v2, 8);
+	if(fread(v2, 1, 8, file) != 8)
+		return -1;
 	if (!strncmp((const char*)v2, (const char*)"RNC\1", 4))
 	{
 		ret_size = v2[4] << 8;//reverse size in rnc format
@@ -1464,22 +1419,24 @@ int32_t sub_AB9E1_get_file_unpack_size(char* a1)//28c9e1
 	{
 		ret_size = x_filelength(file);
 	}
-	sub_98882_close(file);
+	fclose(file);
 	return ret_size;
 }
-int sub_53E60_readfile_and_decompress(const char* path, uint8_t** a2)//234E60
+int readfile_and_decompress(const char* path, uint8_t** a2)//234E60
 {
 	int32_t result; // eax
 	FILE* file; // ebx
 	uint32_t v4; // esi
-	file = sub_98817_open((char*)path, 0x200);//234E72 - 279817
+	file = fopen((char*)path, "r");//234E72 - 279817
 	result = (int32_t)file;
 	if (result != NULL)
 	{
 		v4 = x_filelength(file);//234E82 - 2798DA
-		sub_988A7_read(file, *a2, v4);//234E8F - 2798A7
-		sub_98882_close(file);//234E98 - 279882
-		result = (int32_t)sub_9894C_decompress(*a2, *a2);//234ea2 - 27994c
+		if(fread(*a2, 1, v4, file) != v4)
+			return -1;
+
+		fclose(file);//234E98 - 279882
+		result = (int32_t)decompress(*a2, *a2);//234ea2 - 27994c
 		if (result >= 0)
 		{
 			if (!result)
@@ -1493,7 +1450,7 @@ int sub_53E60_readfile_and_decompress(const char* path, uint8_t** a2)//234E60
 	}
 	return result;
 }
-int32_t sub_9A32D_malloc_open_unpack(Pathstruct path)//27B32d
+int32_t malloc_open_unpack(Pathstruct path)//27B32d
 {
 	//int v1; // edx
 	//int *v2; // eax
@@ -1503,20 +1460,20 @@ int32_t sub_9A32D_malloc_open_unpack(Pathstruct path)//27B32d
 
 	//sub_85070();
 	/*if (path.var40_alloc_type & 1 )
-	  v6 = sub_83D70_malloc1;
+	  v6 = malloc;
 	else
-	  v6 = sub_83CD0_malloc2;*/
+	  v6 = malloc;*/
 	sub_9A2F5(path);
 	if (path.path[0] == 0x2A)//fix
 	{
 		if (path.var40_alloc_type & 1)
 		{
-			*(path.var28_begin_buffer) = (uint8_t*)sub_83D70_malloc1(path.var36_size_buffer);
+			*(path.var28_begin_buffer) = (uint8_t*)malloc(path.var36_size_buffer);
 			memset(*(path.var28_begin_buffer), 0, path.var36_size_buffer);
 		}
 		else
 		{
-			*(path.var28_begin_buffer) = (uint8_t*)sub_83CD0_malloc2(path.var36_size_buffer);
+			*(path.var28_begin_buffer) = (uint8_t*)malloc(path.var36_size_buffer);
 			memset(*(path.var28_begin_buffer), 0, path.var36_size_buffer);
 		}
 		//v2 = *(int *)(path.var28_begin_buffer);
@@ -1526,24 +1483,24 @@ int32_t sub_9A32D_malloc_open_unpack(Pathstruct path)//27B32d
 	}
 	else
 	{
-		path.var36_size_buffer = (int)sub_AB9E1_get_file_unpack_size(path.path);
+		path.var36_size_buffer = (int)get_file_unpack_size(path.path);
 		if (path.var36_size_buffer <= 0)
 			return 0;
 		if (path.var40_alloc_type & 1)
 		{
-			*(path.var28_begin_buffer) = (uint8_t*)sub_83D70_malloc1(path.var36_size_buffer);//asi init a malloc bufferu
+			*(path.var28_begin_buffer) = (uint8_t*)malloc(path.var36_size_buffer);//asi init a malloc bufferu
 			memset(*(path.var28_begin_buffer), 0, path.var36_size_buffer);
 		}
 		else
 		{
-			*(path.var28_begin_buffer) = (uint8_t*)sub_83CD0_malloc2(path.var36_size_buffer);//asi init a malloc bufferu
+			*(path.var28_begin_buffer) = (uint8_t*)malloc(path.var36_size_buffer);//asi init a malloc bufferu
 			memset(*(path.var28_begin_buffer), 0, path.var36_size_buffer);
 		}
 		//v4 = *(int **)path.var28_begin_buffer;
 		//*v4 = v3;
 		if (!(*(path.var28_begin_buffer)))
 			return -1;
-		if (sub_53E60_readfile_and_decompress(path.path, path.var28_begin_buffer) != path.var36_size_buffer)
+		if (readfile_and_decompress(path.path, path.var28_begin_buffer) != path.var36_size_buffer)
 		{
 			path.var28_begin_buffer = 0;
 			path.var32_end_buffer = 0;
@@ -1561,8 +1518,8 @@ int main() {
 	//uint8_t* end;
 	//pstrx.var28_begin_buffer = &begin;
 	//pstrx.var32_end_buffer = &end;
-	sub_9A32D_malloc_open_unpack(pstrx);
-	sub_71410_process_tmaps();
+	malloc_open_unpack(pstrx);
+	process_tmaps();
 	uint16_t v0; // bx
 	//int16_t result; // ax
 
@@ -1577,13 +1534,3 @@ int main() {
 	std::cout << "Hello World!\n";
 }
 
-// Spuštění programu: Ctrl+F5 nebo nabídka Ladit > Spustit bez ladění
-// Ladění programu: F5 nebo nabídka Ladit > Spustit ladění
-
-// Tipy pro zahájení práce:
-//   1. K přidání nebo správě souborů použijte okno Průzkumník řešení.
-//   2. Pro připojení ke správě zdrojového kódu použijte okno Team Explorer.
-//   3. K zobrazení výstupu sestavení a dalších zpráv použijte okno Výstup.
-//   4. K zobrazení chyb použijte okno Seznam chyb.
-//   5. Pokud chcete vytvořit nové soubory kódu, přejděte na Projekt > Přidat novou položku. Pokud chcete přidat do projektu existující soubory kódu, přejděte na Projekt > Přidat existující položku.
-//   6. Pokud budete chtít v budoucnu znovu otevřít tento projekt, přejděte na Soubor > Otevřít > Projekt a vyberte příslušný soubor .sln.

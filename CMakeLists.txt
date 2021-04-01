@@ -18,15 +18,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 pkg_search_module(ZLIB REQUIRED zlib)
 pkg_search_module(PNG REQUIRED libpng)
-#pkg_search_module(OGG REQUIRED libogg)
-#pkg_search_module(VORBIS REQUIRED libvorbis)
-#pkg_search_module(CDIO REQUIRED libcdio)
-#pkg_search_module(SDL2 REQUIRED libSDL2)
-#pkg_search_module(SDL2_mixer REQUIRED libSDL2_mixer)
-#pkg_search_module(SDL2_ttf REQUIRED libSDL2_ttf)
-#pkg_search_module(SDL2_image REQUIRED libSDL2_image)
-#pkg_search_module(SDL_MIXER_X OPTIONAL SDL-Mixer-X)
-#pkg_search_module(KISS_SDL2 OPTIONAL kiss_sdl2)
+pkg_search_module(OGG REQUIRED ogg)
+pkg_search_module(VORBIS REQUIRED vorbis)
+pkg_search_module(CDIO REQUIRED libcdio)
+find_package(SDL2 REQUIRED)
+pkg_search_module(SDL2_MIXER REQUIRED SDL2_mixer)
+pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf)
+pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
+pkg_search_module(SDL2_MIXER_EXT REQUIRED SDL2_mixer_ext)
+pkg_search_module(SDL2_KISS REQUIRED SDL2_kiss)
 pkg_search_module(ADLMIDI REQUIRED libADLMIDI)
 pkg_search_module(OPNMIDI REQUIRED libOPNMIDI)
 #pkg_search_module(FLUIDSYNTH REQUIRED fluidsynth)
@@ -35,8 +35,7 @@ pkg_search_module(OPNMIDI REQUIRED libOPNMIDI)
 ################################################################################
 # Global compiler options
 ################################################################################
-#add_compile_options(-fpermissive)
-add_compile_options(-Wno-narrowing)
+add_compile_options(-Wno-narrowing -fpermissive)
 if (ALL_WARNINGS)
 	add_compile_options(-Wall)
 else ()
@@ -113,6 +112,9 @@ set(SOURCE_FILES__libs__findfirst
 )
 source_group("Source Files\\libs\\findfirst" FILES ${SOURCE_FILES__libs__findfirst})
 
+set(FINDFIRST_LIBRARIES
+	"findfirst"
+)
 
 set(SOURCE_FILES__portability
     "src/portability/mctypes.h"
@@ -233,26 +235,28 @@ source_group("Source Files Editor" FILES ${SOURCE_FILES_EDITOR} )
 
 add_executable(remc2editor ${SOURCE_FILES_EDITOR})
 
+target_include_directories(remc2editor PUBLIC
+   "${CMAKE_SOURCE_DIR}/libs/inih"
+   "${CMAKE_SOURCE_DIR}/libs/findfirst"
+)
+
 target_compile_options(remc2editor PUBLIC ${SDL2_CFLAGS} ${SDL2_TTF_CFLAGS}
-	${SDL2_IMAGE_CFLAGS} ${SDL2_MIXER_LIBRARIES} ${PNG_LIBRARY}
-	${FINDFIRST_CFLAGS}
-	${ADLMIDI_CFLAGS} ${KISS_SDL2_CFLAGS})
+	${SDL2_IMAGE_CFLAGS} ${SDL2_MIXER_CFLAGS} ${SDL2_MIXER_EXT_CFLAGS}
+	${SDL2_KISS_CFLAGS} ${PNG_CFLAGS} ${FINDFIRST_CFLAGS} ${ADLMIDI_CFLAGS}
+)
 
 target_link_libraries(remc2editor PUBLIC 
 	${SDL2_LIBRARIES}
 	${SDL2_TTF_LIBRARIES}
 	${SDL2_IMAGE_LIBRARIES}
 	${SDL2_MIXER_LIBRARIES}
+	${SDL2_MIXER_EXT_LIBRARIES}
 	${PNG_LIBRARIES}
 	${FINDFIRST_LIBRARIES}
     	${ADLMIDI_LIBRARIES}
-    	${KISS_SDL2_LIBRARIES}
+	${SDL2_KISS_LIBRARIES}
 )
 
-target_include_directories(remc2editor PUBLIC
-   "${CMAKE_SOURCE_DIR}/libs/inih"
-   "${CMAKE_SOURCE_DIR}/libs/findfirst"
-)
 
 add_executable(compressTMAPS "tools/compressTMAPS/compressTMAPS.cpp")
 add_executable(convertpal "tools/convertpal/convertpal.cpp")

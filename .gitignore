@@ -35,10 +35,14 @@
 
 /build*
 .flatpak*
-
+CMakeCache.txt
+CMakeFiles/*
+cmake_install.cmake
 !enhancedassets/*
-
-
+Makefile
+remc2
+convertpal
+decompresTmaps
 x64/debug.txt
 
 remc2/editor/debug.txt
