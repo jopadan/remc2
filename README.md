@@ -1,6 +1,10 @@
-!!!Project forked to https://github.com/GrimSqueaker/remc2!!!
+Forked off:
+turican0/remc2
+thobbsinteractive/magic-carpet-2-community-patch
+  GrimSqueaker/remc2
 
-# remc2
+needs jopadan/SDL2_kiss
+
 # Reverse engineering of game Magic Carpet 2 from assembler to c/c++ language<br />
 ## STATUS: full playable, in testing<br />
 <br />
@@ -13,8 +17,8 @@ Now you can only compile only 32-bit binary version (64bit will be available aft
 simple dev blog:https://github.com/turican0/remc2/wiki<br />
 <h2>ROADMAP:</h2><br />
 <h3>MILLSTONE 6</h3><br />
--can build x64 binary<br />
--can build in Linux<br />
+-can build x64 binary - PASSED<br />
+-can build in Linux - PASSED<br />
 <h3>MILLSTONE 5</h3><br />
 -add next resolutions<br />
 <h3>MILLSTONE 4</h3><br />
