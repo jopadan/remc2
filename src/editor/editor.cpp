@@ -198,12 +198,12 @@ void terrain_recalculate() {
 
 	x_WORD_17B4E0 = D41A0_BYTESTR_0.terrain_2FECE.seed_0x2FEE5;
 	D41A0_BYTESTR_0.dword_0x8 = D41A0_BYTESTR_0.terrain_2FECE.seed_0x2FEE5;
-	memset((void*)x_WORD_15B4E0_source, 0, 0x20000);
+	memset((void*)source, 0, 0x20000);
 	sub_B5E70_decompress_terrain_map_level(x_WORD_17B4E0, D41A0_BYTESTR_0.terrain_2FECE.offset_0x2FEE9, D41A0_BYTESTR_0.terrain_2FECE.raise_0x2FEED, D41A0_BYTESTR_0.terrain_2FECE.gnarl_0x2FEF1);
 	sub_44DB0_truncTerrainHeight();//225db0 //trunc and create
 	if (stage > 0)
 	{
-		memset((void*)x_WORD_15B4E0_source, 0, 0x20000);
+		memset((void*)source, 0, 0x20000);
 		sub_44E40(D41A0_BYTESTR_0.terrain_2FECE.river_0x2FEF5, D41A0_BYTESTR_0.terrain_2FECE.lriver_0x2FEF9);//225e40 //add any fields
 	}
 	if (stage > 1)
@@ -241,7 +241,7 @@ void terrain_recalculate() {
 	}
 	if (stage > 9)
 	{
-		memset((void*)x_BYTE_10B4E0_terraintype, 0, 0x10000);
+		memset((void*)terraintype, 0, 0x10000);
 		sub_43970(0);//224970 // smooth terrain
 	}
 	if (stage > 10)
@@ -315,16 +315,16 @@ void fillterrain(kiss_terrain* terrain, float zoom, int beginx, int beginy) {
 					switch (maptype)
 					{
 					case 0:
-						SetPixelMapSurface(i, j, nx, ny, x_BYTE_10B4E0_terraintype);
+						SetPixelMapSurface(i, j, nx, ny, terraintype);
 						break;
 					case 1:
-						SetPixelMapSurface(i, j, nx, ny, x_BYTE_11B4E0_heightmap);
+						SetPixelMapSurface(i, j, nx, ny, heightmap);
 						break;
 					case 2:
-						SetPixelMapSurface(i, j, nx, ny, x_BYTE_12B4E0_shading);
+						SetPixelMapSurface(i, j, nx, ny, shading);
 						break;
 					case 3:
-						SetPixelMapSurface(i, j, nx, ny, x_BYTE_13B4E0_angle);
+						SetPixelMapSurface(i, j, nx, ny, angle);
 						break;
 					}
 					break;
@@ -541,16 +541,16 @@ void fillterraincheck(float zoom, int beginx, int beginy) {
 					switch (maptypefeat)
 					{
 					case 0:
-						SetPixelMapSurfacecheck(i, j, nx, ny, x_BYTE_10B4E0_terraintype);
+						SetPixelMapSurfacecheck(i, j, nx, ny, terraintype);
 						break;
 					case 1:
-						SetPixelMapSurfacecheck(i, j, nx, ny, x_BYTE_11B4E0_heightmap);
+						SetPixelMapSurfacecheck(i, j, nx, ny, heightmap);
 						break;
 					case 2:
-						SetPixelMapSurfacecheck(i, j, nx, ny, x_BYTE_12B4E0_shading);
+						SetPixelMapSurfacecheck(i, j, nx, ny, shading);
 						break;
 					case 3:
-						SetPixelMapSurfacecheck(i, j, nx, ny, x_BYTE_13B4E0_angle);
+						SetPixelMapSurfacecheck(i, j, nx, ny, angle);
 						break;
 					}
 					break;
@@ -733,16 +733,16 @@ void fillterrainfeat(float zoom, int beginx, int beginy) {
 					switch (maptypefeat)
 					{
 					case 0:
-						SetPixelMapSurfacefeat(i, j, nx, ny, x_BYTE_10B4E0_terraintype);
+						SetPixelMapSurfacefeat(i, j, nx, ny, terraintype);
 						break;
 					case 1:
-						SetPixelMapSurfacefeat(i, j, nx, ny, x_BYTE_11B4E0_heightmap);
+						SetPixelMapSurfacefeat(i, j, nx, ny, heightmap);
 						break;
 					case 2:
-						SetPixelMapSurfacefeat(i, j, nx, ny, x_BYTE_12B4E0_shading);
+						SetPixelMapSurfacefeat(i, j, nx, ny, shading);
 						break;
 					case 3:
-						SetPixelMapSurfacefeat(i, j, nx, ny, x_BYTE_13B4E0_angle);
+						SetPixelMapSurfacefeat(i, j, nx, ny, angle);
 						break;
 					}
 					break;
@@ -1021,7 +1021,7 @@ static int textbox1_event(kiss_textbox* textbox, SDL_Event* e,	kiss_vscrollbar* 
 {
 	int index;
 	int result = -1;
-	int terret = kiss_textbox_event(textbox, e, mousex, mousey, draw);
+	int terret = kiss_textbox_event(textbox, e, draw);
 	if (terret==1) {
 		index = textbox->firstline + textbox->selectedline;
 		if (strcmp((char*)kiss_array_data(textbox->array, index),"")) {
@@ -1053,7 +1053,7 @@ static int textbox2_event(kiss_textbox* textbox, SDL_Event* e, int mousex, int m
 {
 	int index;
 	int result = -1;
-	int textret = kiss_textbox_event(textbox, e, mousex, mousey, draw);
+	int textret = kiss_textbox_event(textbox, e, draw);
 	if (textret == 1) {
 		index = textbox->firstline + textbox->selectedline;
 		if (strcmp((char*)kiss_array_data(textbox->array, index), "")) {

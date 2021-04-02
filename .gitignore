@@ -21,6 +21,10 @@
 **/*.opendb
 **/*.ipch
 **/*.suo
+**/*.a
+**/*.so
+*.so
+*.a
 
 **/remc2.exe
 **/remc2.exp
@@ -43,6 +47,12 @@ Makefile
 remc2
 convertpal
 decompresTmaps
+compressTMAPS
+decompressTMAPS
+makecz2
+palletelight
+test_cfs
+xbrz
 x64/debug.txt
 
 remc2/editor/debug.txt
