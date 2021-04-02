@@ -1,9 +1,14 @@
 Forked off:
-turican0/remc2
-thobbsinteractive/magic-carpet-2-community-patch
-  GrimSqueaker/remc2
 
-needs jopadan/SDL2_kiss
+https://github.com/turican0/remc2
+
+https://github.com/thobbsinteractive/magic-carpet-2-community-patch
+
+  https://github.com/GrimSqueaker/remc2
+
+needs:
+
+https://github.com/jopadan/SDL2_kiss
 
 # Reverse engineering of game Magic Carpet 2 from assembler to c/c++ language<br />
 ## STATUS: full playable, in testing<br />
