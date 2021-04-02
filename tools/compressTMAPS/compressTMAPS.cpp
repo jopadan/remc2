@@ -281,6 +281,8 @@ int main()
 		sprintf(buffer, "%s%03d-%02i.data", orig_filename, fileindex, mainindex);
 		FILE* fptr_origdata;
 		fptr_origdata = fopen(buffer, "rb");
+		if(fptr_origdata == NULL)
+			exit(EXIT_FAILURE);
 		fseek(fptr_origdata, 0L, SEEK_END);
 		long szorig = ftell(fptr_origdata);
 		fseek(fptr_origdata, 0L, SEEK_SET);
@@ -305,9 +307,10 @@ int main()
 		sprintf(buffer, "%s%03d-%02i.data", out_filename, fileindex, mainindex);
 		FILE* fptr_outdata;
 		fptr_outdata = fopen(buffer, "wb");
+		if(fptr_outdata == NULL)
+			exit(EXIT_FAILURE);
 
-
-		Bit8u alphaweight = 32;
+		uint8_t alphaweight = 32;
 		/*int datapos = 54;
 		int wpos = 18;
 		int hpos = 22;
@@ -320,7 +323,7 @@ int main()
 
 		Bit8u* alphaimg = content_alphadata + datapos;*/
 
-		unsigned char* content_outdata = (unsigned char*)malloc(width * height * sizeof(char*));
+		uint8_t* content_outdata = (uint8_t*)malloc(width * height * sizeof(char*));
 
 		for (int yy = 0; yy < height; yy++)
 		{
@@ -331,7 +334,7 @@ int main()
 				int origx = (xx + 2) / 4;
 				int origy = (yy + 2) / 4;
 				int origindex = 0;
-				Bit8u origcolor[100];
+				uint8_t origcolor[100];
 				int origwidth = width / 4;
 				int origheight = height / 4;				
 				for (int oy = origy - 2; oy <= origy + 2; oy++)
@@ -351,15 +354,15 @@ int main()
 				png_bytep px = &(row[xx * 4]);
 				//png_bytep alpx = &(rowalpha[xx * 4]);
 				//Bit8u alphablue = alpx[2];
-				Bit8u wrbyte = 0;
+				uint8_t wrbyte = 0;
 				//if (alphablue > alphaweight)
 				{
-					Bit8u datared = px[0];
-					Bit8u datagreen = px[1];
-					Bit8u datablue = px[2];
+					uint8_t datared = px[0];
+					uint8_t datagreen = px[1];
+					uint8_t datablue = px[2];
 
 					int best = 1000;
-					unsigned char x = 0;
+					uint8_t x = 0;
 					//for (int j = 0; j < szstd / 3; j++)
 					for (int j = 0; j < origindex; j++)
 					{
@@ -400,7 +403,7 @@ int main()
 
 		/*for (int y = 0; y < height; y++) {
 			free(row_alphapointers[y]);
-		}
+	}
 		free(row_alphapointers);*/
 
 		fclose(fptr_outdata);

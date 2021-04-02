@@ -220,7 +220,7 @@ bool VGA_LoadFont()
 
 	//Load splash image
 	char fontPath[512];
-	GetSubDirectoryPath(fontPath, "font/16x16-font.bmp");
+	GetSubDirectoryPath(fontPath, "data/font/16x16-font.bmp");
 	surface_font = SDL_LoadBMP(fontPath);
 	if (surface_font == NULL)
 	{
