@@ -2,10 +2,13 @@
 //
 
 #include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
 
 int calcuAsm2(int var1)
 {
-	__asm
+	__asm__ volatile(
 	{
 		mov edx, var1
 		mov eax,edx

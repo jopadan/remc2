@@ -6,8 +6,8 @@
 
 #define IS_EDITOR
 #include "../sub_main.h"
-#include "../engine/engine_support.h"
-#include "../engine/Terrain.h"
+//#include "../engine/engine_support.h"
+//#include "../engine/Terrain.h"
 
 void editor_run();
 

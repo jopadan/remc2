@@ -2,7 +2,12 @@
 //
 
 #include <iostream>
-
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "png.h"
 
 #pragma comment(lib, "zlib.lib") // must be before libpng!
@@ -67,13 +72,13 @@ png_bytep* row_pointers = NULL;
 
 int file_exist(char* filename)
 {
-	struct stat   buffer;
+	struct stat buffer;
 	return (stat(filename, &buffer) == 0);
 }
 
 void read_png_file(char* filename) {
 	FILE* fp;
-	fopen_s(&fp,filename, "rb");
+	fp = fopen(filename, "rb");
 
 	png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!png) abort();
@@ -220,7 +225,7 @@ int main()
 #endif level4
 
 	FILE* fptr_stdpal;
-	fopen_s(&fptr_stdpal, standartpal_filename, "rb");
+	fptr_stdpal = fopen(standartpal_filename, "rb");
 	fseek(fptr_stdpal, 0L, SEEK_END);
 	long szstd = ftell(fptr_stdpal);
 	fseek(fptr_stdpal, 0L, SEEK_SET);
@@ -263,7 +268,7 @@ int main()
 	{
 		
 		char buffer[512];
-		sprintf_s(buffer, "%s%03d-%02i_lionking_60000.png", data_filename, fileindex,mainindex);
+		sprintf(buffer, "%s%03d-%02i_lionking_60000.png", data_filename, fileindex,mainindex);
 		if (!file_exist(buffer))break;
 
 		read_png_file(buffer);
@@ -273,9 +278,9 @@ int main()
 		//sprintf_s(buffer, "%sTMAPS2-0-%03d-alpha_cartoonpainted_400000.png", alpha_filename, fileindex);
 		//read_pngalpha_file(buffer);
 
-		sprintf_s(buffer, "%s%03d-%02i.data", orig_filename, fileindex, mainindex);
+		sprintf(buffer, "%s%03d-%02i.data", orig_filename, fileindex, mainindex);
 		FILE* fptr_origdata;
-		fopen_s(&fptr_origdata, buffer, "rb");
+		fptr_origdata = fopen(buffer, "rb");
 		fseek(fptr_origdata, 0L, SEEK_END);
 		long szorig = ftell(fptr_origdata);
 		fseek(fptr_origdata, 0L, SEEK_SET);
@@ -297,9 +302,9 @@ int main()
 	}
 		*/
 
-		sprintf_s(buffer, "%s%03d-%02i.data", out_filename, fileindex, mainindex);
+		sprintf(buffer, "%s%03d-%02i.data", out_filename, fileindex, mainindex);
 		FILE* fptr_outdata;
-		fopen_s(&fptr_outdata, buffer, "wb");
+		fptr_outdata = fopen(buffer, "wb");
 
 
 		Bit8u alphaweight = 32;

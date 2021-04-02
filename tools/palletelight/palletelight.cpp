@@ -6,7 +6,7 @@
 
 int main(int argc, char* argv[]) {
 	FILE* fptr;
-	fopen_s(&fptr, "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\level25.pal", "rb");
+	fptr = fopen("tools/palletelight/level25.pal", "rb");
 
 	fseek(fptr, 0L, SEEK_END);
 	long sz = ftell(fptr);
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 	fclose(fptr);
 
 	FILE* fptw;
-	fopen_s(&fptw, "c:\\prenos\\remc2\\tools\\palletelight\\Debug\\out-f.pal", "wb");
+	fptw = fopen("tools/palletelight/out-f.pal", "wb");
 
 	for (int i = 0; i < 256*3; i++)
 	{

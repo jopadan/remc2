@@ -2,6 +2,9 @@
 //
 
 #include <iostream>
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
 
 //#define level1 //night
 //#define level2 //day
@@ -441,9 +444,9 @@ int unpack_data_m1(vars_t* v)
 {
 	while (v->processed_size < v->input_size)
 	{
-		make_huftable(v, v->raw_table, _countof(v->raw_table));
-		make_huftable(v, v->len_table, _countof(v->len_table));
-		make_huftable(v, v->pos_table, _countof(v->pos_table));
+		make_huftable(v, v->raw_table, sizeof(v->raw_table));
+		make_huftable(v, v->len_table, sizeof(v->len_table));
+		make_huftable(v, v->pos_table, sizeof(v->pos_table));
 
 		int subchunks = input_bits_m1(v, 16);
 
@@ -852,7 +855,7 @@ void writeImageBMP(char* imageFileName, int width, int height, Bit8u* image)
 	unsigned char* infoHeader = createBitmapInfoHeader(height, width);
 
 	FILE* imageFile;
-	fopen_s(&imageFile, imageFileName, "wb");
+	imageFile = fopen(imageFileName, "wb");
 
 	fwrite(fileHeader, 1, fileHeaderSize, imageFile);
 	fwrite(infoHeader, 1, infoHeaderSize, imageFile);
@@ -885,7 +888,7 @@ void writeImagePNG(char* filename, int width, int height, Bit8u* buffer, char* t
 		png_bytep row = NULL;
 
 		// Open file for writing (binary mode)
-		fopen_s(&fp,filename, "wb");
+		fp = fopen(filename, "wb");
 		if (fp == NULL) {
 			fprintf(stderr, "Could not open file %s for writing\n", filename);
 			code = 1;
@@ -961,7 +964,7 @@ void write_posistruct_to_png(Bit8u* buffer, int width, int height, char* filenam
 	Bit8u pallettebuffer[768];
 	FILE* palfile;
 	//fopen_s(&palfile, "c:\\prenos\\remc2\\testpal.pal", "rb");
-	fopen_s(&palfile, palfilename, "rb");
+	palfile = fopen(palfilename, "rb");
 	fread(pallettebuffer, 768, 1, palfile);
 	fclose(palfile);
 
@@ -1011,7 +1014,7 @@ void write_posistruct_to_bmp(Bit8u* buffer, int width, int height, char* filenam
 	Bit8u pallettebuffer[768];
 	FILE* palfile;
 	//fopen_s(&palfile, "c:\\prenos\\remc2\\testpal.pal", "rb");
-	fopen_s(&palfile, palfilename, "rb");
+	palfile = fopen(palfilename, "rb");
 	fread(pallettebuffer, 768, 1, palfile);
 	fclose(palfile);
 
@@ -1073,22 +1076,22 @@ typedef struct {
 type_E9C08;
 #pragma pack (16)
 
-__int16 x_WORD_E130C = 0; // weak
+int16_t x_WORD_E130C = 0; // weak
 Bit8u* TMAPS00TAB_BEGIN_BUFFER;// ?? must set
 char x_BYTE_E2A20 = 0; // weak
 int x_DWORD_E1304 = 0; // weak
 int x_DWORD_E1308 = 0; // weak
 type_E9C08* x_DWORD_E9C08x;  // weak ?? must set
 int x_DWORD_F66F0[504]; // idb//2c76f0 ?? must set
-__int16 x_WORD_E130E = 0; // weak
-__int16 x_WORD_E1310 = 0; // weak
-__int16 x_WORD_E1312ar[2] = { 0,0 }; // weak
-__int16 x_WORD_E1316 = 0; // weak
+int16_t x_WORD_E130E = 0; // weak
+int16_t x_WORD_E1310 = 0; // weak
+int16_t x_WORD_E1312ar[2] = { 0,0 }; // weak
+int16_t x_WORD_E1316 = 0; // weak
 char x_BYTE_E29E8 = 1; // weak
 Bit8u x_DWORD_17ECA0[4608]; // weak
 type_x_DWORD_E9C28_str* x_DWORD_E9C28_str;
 
-type_animations1* sub_724F0(type_E9C08* a1x, __int16 a2)
+type_animations1* sub_724F0(type_E9C08* a1x, int16_t a2)
 {
 	//type_animations1* resultx; // eax
 	int resulty;
@@ -1113,7 +1116,7 @@ type_animations1* sub_724F0(type_E9C08* a1x, __int16 a2)
 	return &(a1x->dword_2[resulty]);
 }
 
-void sub_765FC(__int16 a1, __int16 a2)
+void sub_765FC(int16_t a1, int16_t a2)
 {
 	x_WORD_E130E = a1;
 	x_WORD_E1310 = a2;
@@ -1127,26 +1130,26 @@ int sub_7677C()
 {
 	int result; // eax
 
-	result = (unsigned __int16)x_WORD_E1312ar[0] - 6;
+	result = (uint16_t)x_WORD_E1312ar[0] - 6;
 	x_DWORD_E1308 += result;
 	return result;
 }
 
-__int16 sub_7678D()//animate sprite
+int16_t sub_7678D()//animate sprite
 {
 	x_WORD* v0; // edi
 	x_WORD* v1; // esi
-	__int16 result; // ax
+	int16_t result; // ax
 	x_BYTE* v3; // edi
 	x_BYTE* v4; // esi
 	char v5; // dl
 	x_WORD* v6; // [esp-4h] [ebp-14h]
 	x_WORD* v7; // [esp+0h] [ebp-10h]
-	__int16 i; // [esp+6h] [ebp-Ah]
-	__int16 v9; // [esp+8h] [ebp-8h]
+	int16_t i; // [esp+6h] [ebp-Ah]
+	int16_t v9; // [esp+8h] [ebp-8h]
 	int v10; // [esp+Ch] [ebp-4h]
 
-	v10 = (unsigned __int16)x_WORD_E130E;
+	v10 = (uint16_t)x_WORD_E130E;
 	v0 = (x_WORD*)x_DWORD_E1304;
 	v1 = (x_WORD*)(x_DWORD_E1308 + 2);
 	v9 = *(x_WORD*)x_DWORD_E1308;
@@ -1182,8 +1185,8 @@ __int16 sub_7678D()//animate sprite
 			{
 				LOBYTE(result) = *(x_BYTE*)v1;
 				v4 = (char*)v1 + 1;
-				result = (unsigned __int8)result;
-				v0 = (x_WORD*)((char*)v0 + (unsigned __int8)result);
+				result = (uint8_t)result;
+				v0 = (x_WORD*)((char*)v0 + (uint8_t)result);
 				v5 = *v4;
 				v1 = (x_WORD*)(v4 + 1);
 				if (v5 > 0)
@@ -1219,21 +1222,21 @@ int sub_76840()
 {
 	x_BYTE* v0; // edi
 	char* v1; // esi
-	__int16 v2; // bx
-	__int16 v3; // cx
-	unsigned __int8 v4; // dl
-	__int16 v5; // ax
+	int16_t v2; // bx
+	int16_t v3; // cx
+	uint8_t v4; // dl
+	int16_t v5; // ax
 	char v6; // dh
 	char v7; // dh
 	int result; // eax
 	int v9; // [esp-8h] [ebp-Ch]
 	int v10; // [esp-4h] [ebp-8h]
-	__int16 v11; // [esp+2h] [ebp-2h]
+	int16_t v11; // [esp+2h] [ebp-2h]
 
 	v11 = x_WORD_E130E;
 	v0 = (x_BYTE*)x_DWORD_E1304;
 	v1 = (char*)x_DWORD_E1308;
-	v10 = (unsigned __int16)x_WORD_E1312ar[0] - 6;
+	v10 = (uint16_t)x_WORD_E1312ar[0] - 6;
 	v9 = x_DWORD_E1308;
 	v2 = x_WORD_E1310;
 	do
@@ -1299,7 +1302,7 @@ int sub_76840()
 
 void sub_766A4()//animate sprite
 {
-	__int16 result; // ax
+	int16_t result; // ax
 
 	qmemcpy(&x_WORD_E1316, (void*)x_DWORD_E1308, sizeof(x_WORD_E1316));
 	x_DWORD_E1308 += 2;
@@ -1330,9 +1333,9 @@ void sub_766A4()//animate sprite
 	//return result;
 }
 
-__int16 sub_76752()
+int16_t sub_76752()
 {
-	__int16 result; // ax
+	int16_t result; // ax
 
 	x_WORD_E130E = *(x_WORD*)(x_DWORD_E1308 + 2);
 	result = *(x_WORD*)(x_DWORD_E1308 + 4);
@@ -1366,7 +1369,7 @@ int sub_72350(type_animations1* a1x)//253350 //animates sprite
 	int v1; // esi
 	int v2; // edi
 	int v3; // eax
-	__int16 v4; // cx
+	int16_t v4; // cx
 	int result; // eax
 
 	if (a1x->word_22 > a1x->word_16)
@@ -1390,14 +1393,14 @@ int sub_72350(type_animations1* a1x)//253350 //animates sprite
 
 int sub_715B0()//2525b0
 {
-	unsigned __int16 v0; // bx
+	uint16_t v0; // bx
 	int result; // eax
 	int* v2; // ecx
 	char v3; // cl
 	char v4; // cl
 	type_animations1* v5x; // eax
-	__int16 v6; // si
-	unsigned __int16 i; // bx
+	int16_t v6; // si
+	uint16_t i; // bx
 	int* v8; // edi
 	char v9; // cl
 	type_animations1* v10x; // eax
@@ -1521,9 +1524,9 @@ void sub_83E80_freemem4(Bit8u* a1)//264e80
 		//sub_85350(); //fix
 	}
 }
-type_E9C08* sub_72120(unsigned __int16 a1)//253120
+type_E9C08* sub_72120(uint16_t a1)//253120
 {
-	unsigned __int16 v1; // di
+	uint16_t v1; // di
 	type_E9C08* v2x; // esi
 	type_E9C08* v3x; // ebx
 	type_animations1* v4; // eax
@@ -1561,19 +1564,19 @@ signed int sub_71CD0(type_x_DWORD_E9C28_str* a1y)//252cd0
 {
 	int i; // edx
 
-	for (i = 0; (signed __int16)i < (signed int)a1y->word_22; i++)
+	for (i = 0; (int16_t)i < (signed int)a1y->word_22; i++)
 	{
-		if (!*(x_DWORD*)(14 * (signed __int16)i + a1y->dword_8_data + 4))
+		if (!*(x_DWORD*)(14 * (int16_t)i + a1y->dword_8_data + 4))
 			return i;
 	}
 	return -1;
 }
 
-Bit8u* sub_71E70(type_x_DWORD_E9C28_str* a1y, unsigned int a2, __int16 a3)//252e70
+Bit8u* sub_71E70(type_x_DWORD_E9C28_str* a1y, unsigned int a2, int16_t a3)//252e70
 {
-	signed __int16 v3; // si
-	signed __int16 v4; // ax
-	signed __int16 v5; // dx
+	int16_t v3; // si
+	int16_t v4; // ax
+	int16_t v5; // dx
 	int v6; // ecx
 	int v7; // eax
 	Bit8u* result; // eax
@@ -1594,7 +1597,7 @@ Bit8u* sub_71E70(type_x_DWORD_E9C28_str* a1y, unsigned int a2, __int16 a3)//252e
 			*(x_WORD*)(a1y->dword_8_data + v7 + 12) = a3;
 			a1y->dword_4 -= a2;
 			*(x_WORD*)(a1y->dword_8_data + v7 + 8) = a1y->word_20;
-			*(x_DWORD*)(a1y->dword_12x + (unsigned __int16)(a1y->word_20)++) = (Bit32u)a1y->dword_8_data + 14 * v6;
+			*(x_DWORD*)(a1y->dword_12x + (uint16_t)(a1y->word_20)++) = (Bit32u)a1y->dword_8_data + 14 * v6;
 		}
 	}
 	if (v3 <= -1)
@@ -1605,9 +1608,9 @@ Bit8u* sub_71E70(type_x_DWORD_E9C28_str* a1y, unsigned int a2, __int16 a3)//252e
 }
 
 
-type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C28_str* a3y)//252b40
+type_x_DWORD_E9C28_str* sub_71B40(int a1, uint16_t a2, type_x_DWORD_E9C28_str* a3y)//252b40
 {
-	unsigned __int16 v3; // di
+	uint16_t v3; // di
 	int v4; // eax
 	int v5; // eax
 	int v6; // edx
@@ -1674,18 +1677,18 @@ type_x_DWORD_E9C28_str* sub_71B40(int a1, unsigned __int16 a2, type_x_DWORD_E9C2
 }
 
 
-type_animations1* sub_721C0_initTmap(type_E9C08* a1x, int* a2, __int16 a3)//2531c0
+type_animations1* sub_721C0_initTmap(type_E9C08* a1x, int* a2, int16_t a3)//2531c0
 {
-	signed __int16 v3; // cx
-	signed __int16 v4; // si
-	signed __int16 i; // bx
+	int16_t v3; // cx
+	int16_t v4; // si
+	int16_t i; // bx
 	//x_DWORD *v6; // edx
 	type_animations1* v6x;
 	int v7; // ebx
 	int v8; // ecx
-	__int16 v9; // ST08_2
+	int16_t v9; // ST08_2
 	//int v10; // edx
-	signed __int16 v12; // [esp+Ch] [ebp-4h]
+	int16_t v12; // [esp+Ch] [ebp-4h]
 
 	v3 = -1;
 	v4 = -1;
@@ -1708,7 +1711,7 @@ type_animations1* sub_721C0_initTmap(type_E9C08* a1x, int* a2, __int16 a3)//2531
 	if (v12 <= -1)
 		return 0;
 	v7 = *a2;
-	v8 = *(unsigned __int16*)(*a2 + 4) * *(unsigned __int16*)(*a2 + 2);
+	v8 = *(uint16_t*)(*a2 + 4) * *(uint16_t*)(*a2 + 2);
 	v9 = *(x_WORD*)(v8 + *a2 + 6);
 	//v10 = 28 * v12;
 	a1x->dword_2[v12].dword_4 = (x_DWORD)a2;
@@ -1738,7 +1741,7 @@ type_animations1* sub_721C0_initTmap(type_E9C08* a1x, int* a2, __int16 a3)//2531
 int main()
 {
 	FILE* fptrTMAPSdata;
-	fopen_s(&fptrTMAPSdata, tmapsdatfilename, "rb");
+	fptrTMAPSdata = fopen(tmapsdatfilename, "rb");
 	fseek(fptrTMAPSdata, 0L, SEEK_END);
 	long sz = ftell(fptrTMAPSdata);
 	fseek(fptrTMAPSdata, 0L, SEEK_SET);
@@ -1747,7 +1750,7 @@ int main()
 	fclose(fptrTMAPSdata);
 
 	FILE* fptrTMAPStab;
-	fopen_s(&fptrTMAPStab, tmapstabfilename, "rb");
+	fptrTMAPStab = fopen(tmapstabfilename, "rb");
 	fseek(fptrTMAPStab, 0L, SEEK_END);
 	long sztab = ftell(fptrTMAPStab);
 	fseek(fptrTMAPStab, 0L, SEEK_SET);
@@ -1790,7 +1793,7 @@ int main()
 		FILE* fptw;
 		char filename[300];
 		sprintf_s(filename, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i.rnc", tmapsstr, index);
-		fopen_s(&fptw, filename, "wb");
+		fopen(&fptw, filename, "wb");
 		fwrite(&contentTMAPSdat[shift], size, 1, fptw);
 		fclose(fptw);
 #endif
@@ -1801,7 +1804,7 @@ int main()
 
 
 		Bit8u* index2 = 10 * index + TMAPS00TAB_BEGIN_BUFFER;
-		x_DWORD_F66F0[index] = (int)sub_71E70(x_DWORD_E9C28_str, (unsigned __int16)(4 * ((unsigned int)(*(x_DWORD*)index2 + 13) >> 2)), index);
+		x_DWORD_F66F0[index] = (int)sub_71E70(x_DWORD_E9C28_str, (uint16_t)(4 * ((unsigned int)(*(x_DWORD*)index2 + 13) >> 2)), index);
 		int index6 = x_DWORD_F66F0[index];
 		Bit8u** subpointer = (Bit8u * *)x_DWORD_F66F0[index];
 		*subpointer = (Bit8u*)malloc(unpacksize);
@@ -1811,7 +1814,7 @@ int main()
 			/*index = */sub_721C0_initTmap(x_DWORD_E9C08x, (int*)index6, index);
 		/*
 				if (**(x_BYTE **)index6 & 1)
-			index = sub_721C0_initTmap((unsigned __int16*)x_DWORD_E9C08, (int*)index6, index);
+			index = sub_721C0_initTmap((uint16_t*)x_DWORD_E9C08, (int*)index6, index);
 		*/
 
 
@@ -1822,27 +1825,27 @@ int main()
 #ifdef write_data
 		FILE* fptw2;
 		char filenamedata[300];
-		sprintf_s(filenamedata, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00.data", tmapsstr, index);
-		fopen_s(&fptw2, filenamedata, "wb");
+		sprintf(filenamedata, "tools\\decompressTMAPS\\out\\%s%03i-00.data", tmapsstr, index);
+		fptw2 = fopen(filenamedata, "wb");
 		fwrite(buffer, unpacksize, 1, fptw2);
 		fclose(fptw2);
 #endif
 
 
 #ifdef write_bmp
-		sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00.bmp", tmapsstr, index);
+		sprintf(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00.bmp", tmapsstr, index);
 		write_posistruct_to_bmp(buffer + 6, width, height, outname);//test write
 #endif
 
 #ifdef write_png
-		sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00.png", tmapsstr, index);
+		sprintf(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00.png", tmapsstr, index);
 
-		sprintf_s(title, "%s%03i", tmapsstr, index);
+		sprintf(title, "%s%03i", tmapsstr, index);
 		write_posistruct_to_png(buffer + 6, width, height, outname, title, 0);//test write
 #endif
 #ifdef write_alphapng
-		sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-alpha-00.png", tmapsstr, index);
-		sprintf_s(title, "%s%03i", tmapsstr, index);
+		sprintf(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-alpha-00.png", tmapsstr, index);
+		sprintf(title, "%s%03i", tmapsstr, index);
 		write_posistruct_to_png(buffer + 6, width, height, outname, title, 1);//test write
 #endif
 
@@ -1897,7 +1900,7 @@ int main()
 
 
 			Bit8u* index2 = 10 * index + TMAPS00TAB_BEGIN_BUFFER;
-			x_DWORD_F66F0[index] = (int)sub_71E70(x_DWORD_E9C28_str, (unsigned __int16)(4 * ((unsigned int)(*(x_DWORD*)index2 + 13) >> 2)), index);
+			x_DWORD_F66F0[index] = (int)sub_71E70(x_DWORD_E9C28_str, (uint16_t)(4 * ((unsigned int)(*(x_DWORD*)index2 + 13) >> 2)), index);
 			Bit8u* subpointer = *(Bit8u * *)x_DWORD_F66F0[index];
 			subpointer = (Bit8u*)malloc(unpacksize);
 			memcpy(subpointer, buffer, unpacksize);
@@ -1907,8 +1910,8 @@ int main()
 
 			FILE* fptw2_prev;
 			char filenamedata[300];
-			sprintf_s(filenamedata, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-00.data", tmapsstr, index);
-			fopen_s(&fptw2_prev, filenamedata, "rb");
+			sprintf(filenamedata, "tools\\decompressTMAPS\\out\\%s%03i-00.data", tmapsstr, index);
+			fptw2_prev = fopen(filenamedata, "rb");
 			fread(prevbuffer, width * height + 6, 1, fptw2_prev);
 			fclose(fptw2_prev);
 
@@ -1925,8 +1928,8 @@ int main()
 
 			//FILE* fptw2_prev;
 			//char filenamedata[300];
-			sprintf_s(filenamedata, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.data", tmapsstr, index, mainindex);
-			fopen_s(&fptw2_prev, filenamedata, "rb");
+			sprintf(filenamedata, "tools\\decompressTMAPS\\out\\%s%03i-%02i.data", tmapsstr, index, mainindex);
+			fptw2_prev = fopen(filenamedata, "rb");
 			if(fptw2_prev==NULL)
 			{
 				index++; continue;
@@ -1947,26 +1950,26 @@ int main()
 
 
 			FILE* fptw2;
-			sprintf_s(filenamedata, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.data", tmapsstr, index, mainindex+1);
-			fopen_s(&fptw2, filenamedata, "wb");
+			sprintf(filenamedata, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.data", tmapsstr, index, mainindex+1);
+			fptw2 = fopen(filenamedata, "wb");
 			fwrite(buffer, width * height + 6, 1, fptw2);
 			fclose(fptw2);
 	#endif
 
 	#ifdef write_bmp
 			char outname[512];
-			sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.bmp", tmapsstr, index, mainindex + 1);
+			sprintf(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.bmp", tmapsstr, index, mainindex + 1);
 			write_posistruct_to_bmp(buffer + 6, width, height, outname);//test write
 	#endif
 
 	#ifdef write_png
-			sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.png", tmapsstr, index, mainindex+1);
-			sprintf_s(title, "%s%03i", tmapsstr, index);
+			sprintf(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-%02i.png", tmapsstr, index, mainindex+1);
+			sprintf(title, "%s%03i", tmapsstr, index);
 			write_posistruct_to_png(buffer + 6, width, height, outname, title, 0);//test write
 	#endif
 	#ifdef write_alphapng
-			sprintf_s(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-alpha-%02i.png", tmapsstr, index, mainindex + 1);
-			sprintf_s(title, "%s%03i", tmapsstr, index);
+			sprintf(outname, "c:\\prenos\\remc2\\tools\\decompressTMAPS\\out\\%s%03i-alpha-%02i.png", tmapsstr, index, mainindex + 1);
+			sprintf(title, "%s%03i", tmapsstr, index);
 			write_posistruct_to_png(buffer + 6, width, height, outname, title, 1);//test write
 	#endif
 

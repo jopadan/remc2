@@ -30,7 +30,7 @@ pkg_search_module(SDL2_KISS REQUIRED SDL2_kiss)
 pkg_search_module(ADLMIDI REQUIRED libADLMIDI)
 pkg_search_module(OPNMIDI REQUIRED libOPNMIDI)
 #pkg_search_module(FLUIDSYNTH REQUIRED fluidsynth)
-#pkg_search_module(GTEST REQUIRED gtest)
+pkg_search_module(GTEST REQUIRED gtest)
 
 ################################################################################
 # Global compiler options
@@ -214,9 +214,9 @@ if (USE_SANITIZERS)
 		-static-liblsan
 		-static-libubsan
 		)
-	target_link_options(remc2 PRIVATE ${SANITIZER_OPTIONS})
-	target_link_options(remc2unittests PRIVATE ${SANITIZER_OPTIONS})
-	target_link_options(remc2editor PRIVATE ${SANITIZER_OPTIONS})
+target_link_options(remc2 PRIVATE ${SANITIZER_OPTIONS})
+target_link_options(remc2unittests PRIVATE ${SANITIZER_OPTIONS})
+target_link_options(remc2editor PRIVATE ${SANITIZER_OPTIONS})
 endif ()
 
 
@@ -251,21 +251,75 @@ target_link_libraries(remc2editor PUBLIC
 	${SDL2_IMAGE_LIBRARIES}
 	${SDL2_MIXER_LIBRARIES}
 	${SDL2_MIXER_EXT_LIBRARIES}
+	${SDL2_KISS_LIBRARIES}
 	${PNG_LIBRARIES}
 	${FINDFIRST_LIBRARIES}
     	${ADLMIDI_LIBRARIES}
-	${SDL2_KISS_LIBRARIES}
 )
 
 
 add_executable(compressTMAPS "tools/compressTMAPS/compressTMAPS.cpp")
+target_link_libraries(compressTMAPS PUBLIC 
+	${SDL2_LIBRARIES}
+	${SDL2_TTF_LIBRARIES}
+	${SDL2_IMAGE_LIBRARIES}
+	${SDL2_MIXER_LIBRARIES}
+	${SDL2_MIXER_EXT_LIBRARIES}
+	${SDL2_KISS_LIBRARIES}
+	${PNG_LIBRARIES}
+	${FINDFIRST_LIBRARIES}
+    	${ADLMIDI_LIBRARIES}
+)
 add_executable(convertpal "tools/convertpal/convertpal.cpp")
+target_link_libraries(convertpal PUBLIC 
+	${SDL2_LIBRARIES}
+	${SDL2_TTF_LIBRARIES}
+	${SDL2_IMAGE_LIBRARIES}
+	${SDL2_MIXER_LIBRARIES}
+	${SDL2_MIXER_EXT_LIBRARIES}
+	${SDL2_KISS_LIBRARIES}
+	${PNG_LIBRARIES}
+	${FINDFIRST_LIBRARIES}
+    	${ADLMIDI_LIBRARIES}
+)
 add_executable(decompressTMAPS "tools/decompressTMAPS/decompressTMAPS.cpp")
+target_link_libraries(decompressTMAPS PUBLIC 
+	${SDL2_LIBRARIES}
+	${SDL2_TTF_LIBRARIES}
+	${SDL2_IMAGE_LIBRARIES}
+	${SDL2_MIXER_LIBRARIES}
+	${SDL2_MIXER_EXT_LIBRARIES}
+	${SDL2_KISS_LIBRARIES}
+	${PNG_LIBRARIES}
+	${FINDFIRST_LIBRARIES}
+    	${ADLMIDI_LIBRARIES}
+)
 add_executable(decompresTmaps "tools/decompresTmaps/decompresTmaps.cpp")
-add_executable(makeczmc2 "tools/makeczmc2/makeczmc2.cpp")
+target_link_libraries(decompresTmaps PUBLIC 
+	${SDL2_LIBRARIES}
+	${SDL2_TTF_LIBRARIES}
+	${SDL2_IMAGE_LIBRARIES}
+	${SDL2_MIXER_LIBRARIES}
+	${SDL2_MIXER_EXT_LIBRARIES}
+	${SDL2_KISS_LIBRARIES}
+	${PNG_LIBRARIES}
+	${FINDFIRST_LIBRARIES}
+    	${ADLMIDI_LIBRARIES}
+)
 add_executable(palletelight "tools/palletelight/palletelight.cpp")
-add_executable(test_cfs "tools/test_cfs/test_cfs.cpp")
-add_executable(xbrz "tools/xbrz/xbrz.cpp")
+target_link_libraries(palletelight PUBLIC 
+	${SDL2_LIBRARIES}
+	${SDL2_TTF_LIBRARIES}
+	${SDL2_IMAGE_LIBRARIES}
+	${SDL2_MIXER_LIBRARIES}
+	${SDL2_MIXER_EXT_LIBRARIES}
+	${SDL2_KISS_LIBRARIES}
+	${PNG_LIBRARIES}
+	${FINDFIRST_LIBRARIES}
+    	${ADLMIDI_LIBRARIES}
+)
+#add_executable(test_cfs "tools/test_cfs/test_cfs.cpp")
+#add_executable(xbrz "tools/xbrz/xbrz.cpp")
 
 install(
     TARGETS ${PROJECT_NAME}

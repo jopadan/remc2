@@ -1021,7 +1021,7 @@ static int textbox1_event(kiss_textbox* textbox, SDL_Event* e,	kiss_vscrollbar* 
 {
 	int index;
 	int result = -1;
-	int terret = kiss_textbox_event(textbox, e, draw);
+	int terret = kiss_textbox_event(textbox, e, 0, 0, draw);
 	if (terret==1) {
 		index = textbox->firstline + textbox->selectedline;
 		if (strcmp((char*)kiss_array_data(textbox->array, index),"")) {
@@ -1053,7 +1053,7 @@ static int textbox2_event(kiss_textbox* textbox, SDL_Event* e, int mousex, int m
 {
 	int index;
 	int result = -1;
-	int textret = kiss_textbox_event(textbox, e, draw);
+	int textret = kiss_textbox_event(textbox, e, mousex, mousey, draw);
 	if (textret == 1) {
 		index = textbox->firstline + textbox->selectedline;
 		if (strcmp((char*)kiss_array_data(textbox->array, index), "")) {
@@ -2837,12 +2837,12 @@ int main_x(/*int argc, char** argv*/)
 	//kiss_label_new(&label2, &window1, (char*)"Files", textbox2.rect.x +	kiss_edge, textbox1.rect.y - kiss_textfont.lineheight);
 	//kiss_label_new(&label_sel, &window1, (char*)"", textbox1.rect.x +kiss_edge, textbox1.rect.y + textbox_height +kiss_normal.h);
 	//kiss_entry_new(&entry, &window1, 1, (char*)"kiss", textbox1.rect.x,label_sel.rect.y + kiss_textfont.lineheight,2 * textbox_width + 2 * kiss_up.w + kiss_edge);
-	kiss_button_new(&button_cancel, &window1, (char*)"EXIT",530,740);
-	kiss_button_new(&button_levelsave, &window1, (char*)"SAVE", 530, 720);
-	kiss_button_new(&button_levelsavecsv, &window1, (char*)"S_CSV", 600, 720);
-	kiss_button_new(&button_cleanlevelfeat, &window1, (char*)"CLEAR", 530, 700);
-	kiss_button_new(&button_cleanselectedlevelfeat, &window1, (char*)"D_SEL", 600, 700);
-	kiss_button_new(&button_filter, &window1, (char*)"FILTR", 670, 700);
+	kiss_button_new(&button_cancel, &window1, (char*)"EXIT",530,740, &img_none);
+	kiss_button_new(&button_levelsave, &window1, (char*)"SAVE", 530, 720, &img_none);
+	kiss_button_new(&button_levelsavecsv, &window1, (char*)"S_CSV", 600, 720, &img_none);
+	kiss_button_new(&button_cleanlevelfeat, &window1, (char*)"CLEAR", 530, 700, &img_none);
+	kiss_button_new(&button_cleanselectedlevelfeat, &window1, (char*)"D_SEL", 600, 700, &img_none);
+	kiss_button_new(&button_filter, &window1, (char*)"FILTR", 670, 700, &img_none);
 	//kiss_button_new(&button_ok1, &window1, (char*)"OK", button_cancel.rect.x -2 * kiss_normal.w, button_cancel.rect.y);
 
 	/*for (int i = 0; i < count_features; i++)
@@ -2866,13 +2866,13 @@ int main_x(/*int argc, char** argv*/)
 	kiss_window_new(&window_selectcheck, NULL, 1, window3.rect.x + 300, window3.rect.y + 10, window_selectcheck_width, window_selectcheck_height);
 	kiss_label_new(&labelIndexWind3, &window3, (char*)"IX:", 300 + window3.rect.x + kiss_up.w, window3.rect.y + 10);
 
-	kiss_hex2edit_new(&hex2edit1check, &window3, &temp_var, (char*)"ST:", window3.rect.x + kiss_up.w, window3.rect.y + 10);
-	kiss_hex4edit_new(&hex4edit2check, &window3, &temp_var, (char*)"1D:", window3.rect.x + kiss_up.w, window3.rect.y + 30);
-	kiss_hex4edit_new(&hex4edit3check, &window3, &temp_var, (char*)" X:", window3.rect.x + kiss_up.w, window3.rect.y + 50);
-	kiss_hex4edit_new(&hex4edit4check, &window3, &temp_var, (char*)" Y:", window3.rect.x + kiss_up.w, window3.rect.y + 70);
+	kiss_hex2edit_new(&hex2edit1check, &window3, &temp_var, (char*)"ST:", window3.rect.x + kiss_up.w, window3.rect.y + 10, 110);
+	kiss_hex4edit_new(&hex4edit2check, &window3, &temp_var, (char*)"1D:", window3.rect.x + kiss_up.w, window3.rect.y + 30, 110);
+	kiss_hex4edit_new(&hex4edit3check, &window3, &temp_var, (char*)" X:", window3.rect.x + kiss_up.w, window3.rect.y + 50, 110);
+	kiss_hex4edit_new(&hex4edit4check, &window3, &temp_var, (char*)" Y:", window3.rect.x + kiss_up.w, window3.rect.y + 70, 110);
 	kiss_button_new(&button_selectcheck, &window3, (char*)" ", window3.rect.x + kiss_up.w + 270, window3.rect.y + 10, &img_search);
 	button_selectcheck.activeimg = img_search; button_selectcheck.prelightimg = img_search;
-	kiss_button_new(&button_ok1check, &window3, (char*)"OK", 300 + window3.rect.x + kiss_up.w + 80, window3.rect.y + 130);
+	kiss_button_new(&button_ok1check, &window3, (char*)"OK", 300 + window3.rect.x + kiss_up.w + 80, window3.rect.y + 130, 110);
 
 	//kiss_label_new(&label_res, &window2, (char*)"", window2.rect.x +kiss_up.w, window2.rect.y + kiss_vslider.h);
 	//label_res.textcolor = kiss_blue;
@@ -2941,16 +2941,16 @@ int main_x(/*int argc, char** argv*/)
 	
 	kiss_label_new(&labelIndexWind2, &window2, (char*)"IX:", 300 + window2.rect.x + kiss_up.w, window2.rect.y + 10);
 
-	kiss_hex4edit_new(&hex4edit1feat, &window2, &temp_var, (char*)"TP:", window2.rect.x + kiss_up.w, window2.rect.y + 10);
-	kiss_hex4edit_new(&hex4edit2feat, &window2, &temp_var, (char*)"ST:", window2.rect.x + kiss_up.w, window2.rect.y + 30);
-	kiss_hex4edit_new(&hex4edit3feat, &window2, &temp_var, (char*)" X:", window2.rect.x + kiss_up.w, window2.rect.y + 50);
-	kiss_hex4edit_new(&hex4edit4feat, &window2, &temp_var, (char*)" Y:", window2.rect.x + kiss_up.w, window2.rect.y + 70);
-	kiss_hex4edit_new(&hex4edit5feat, &window2, &temp_var, (char*)" Z:", window2.rect.x + kiss_up.w, window2.rect.y + 90);
-	kiss_hex4edit_new(&hex4edit6feat, &window2, &temp_var, (char*)"10:", window2.rect.x + kiss_up.w, window2.rect.y + 110);
-	kiss_hex4edit_new(&hex4edit7feat, &window2, &temp_var, (char*)"SG:", window2.rect.x + kiss_up.w, window2.rect.y + 130);
-	kiss_hex4edit_new(&hex4edit8feat, &window2, &temp_var, (char*)"14:", window2.rect.x + kiss_up.w, window2.rect.y + 150);
-	kiss_hex4edit_new(&hex4edit9feat, &window2, &temp_var, (char*)"PR:", window2.rect.x + kiss_up.w, window2.rect.y + 170);
-	kiss_hex4edit_new(&hex4edit10feat, &window2, &temp_var, (char*)"CH:", window2.rect.x + kiss_up.w, window2.rect.y + 190);
+	kiss_hex4edit_new(&hex4edit1feat, &window2, &temp_var, (char*)"TP:", window2.rect.x + kiss_up.w, window2.rect.y + 10, 110);
+	kiss_hex4edit_new(&hex4edit2feat, &window2, &temp_var, (char*)"ST:", window2.rect.x + kiss_up.w, window2.rect.y + 30, 110);
+	kiss_hex4edit_new(&hex4edit3feat, &window2, &temp_var, (char*)" X:", window2.rect.x + kiss_up.w, window2.rect.y + 50, 110);
+	kiss_hex4edit_new(&hex4edit4feat, &window2, &temp_var, (char*)" Y:", window2.rect.x + kiss_up.w, window2.rect.y + 70, 110);
+	kiss_hex4edit_new(&hex4edit5feat, &window2, &temp_var, (char*)" Z:", window2.rect.x + kiss_up.w, window2.rect.y + 90, 110);
+	kiss_hex4edit_new(&hex4edit6feat, &window2, &temp_var, (char*)"10:", window2.rect.x + kiss_up.w, window2.rect.y + 110, 110);
+	kiss_hex4edit_new(&hex4edit7feat, &window2, &temp_var, (char*)"SG:", window2.rect.x + kiss_up.w, window2.rect.y + 130, 110);
+	kiss_hex4edit_new(&hex4edit8feat, &window2, &temp_var, (char*)"14:", window2.rect.x + kiss_up.w, window2.rect.y + 150, 110);
+	kiss_hex4edit_new(&hex4edit9feat, &window2, &temp_var, (char*)"PR:", window2.rect.x + kiss_up.w, window2.rect.y + 170, 110);
+	kiss_hex4edit_new(&hex4edit10feat, &window2, &temp_var, (char*)"CH:", window2.rect.x + kiss_up.w, window2.rect.y + 190, 110);
 	kiss_button_new(&button_selecttype, &window2, (char*)" ", window2.rect.x + kiss_up.w + 270, window2.rect.y + 10, &img_search);
 	button_selecttype.activeimg = img_search; button_selecttype.prelightimg = img_search;
 
@@ -2969,7 +2969,7 @@ int main_x(/*int argc, char** argv*/)
 	button_deletefeat.prelightimg = img_delete_prelight;
 	kiss_button_new(&button_cleanfeat, &window2, (char*)" ", 300 + window2.rect.x + kiss_up.w + 80, window2.rect.y + 90, &img_clean_normal);
 	button_cleanfeat.prelightimg = img_clean_prelight;
-	kiss_button_new(&button_ok1feat, &window2, (char*)"OK", 300 + window2.rect.x + kiss_up.w + 80, window2.rect.y + 130);
+	kiss_button_new(&button_ok1feat, &window2, (char*)"OK", 300 + window2.rect.x + kiss_up.w + 80, window2.rect.y + 130, &img_none);
 	//kiss_button_new(&button_cancelfeat, &window2, (char*)"CANCEL", window2.rect.x + window2.rect.w-100-kiss_normal.w / 2, window2.rect.y + 250);
 	kiss_terrain_new(&terrainfeat, &window2, mapsurfacefeat, window2.rect.x + kiss_border, window2.rect.y + window2.rect.h - mapimagefeat.h - kiss_border, &terrainzoomfeat, &terrainbeginxfeat, &terrainbeginyfeat);
 
